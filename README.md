@@ -6,6 +6,8 @@
 - Every number comes from the generated [FACTS.md](FACTS.md).
 - The method, results and limits will be published here when the test is done.
 
-**Status:** data pipeline (step 00: pull and profile) done.
+**Status:**
+- Data pipeline done: pull, profile, cleaning, reconciliation against NSE's official trading calendar, target and ATR/naive baselines.
+- Next: Kronos sampling.
 
 Raw market data is not redistributed in this repo. `00_pull_data.py` rebuilds it, and the committed manifest's sha256 shows whether your pull matches.

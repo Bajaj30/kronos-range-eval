@@ -71,6 +71,28 @@ def ensure_snapshot(snap_dir, tickers: dict, fetch, meta: dict) -> tuple[dict, b
 
 
 def load_raw(snap_dir, name: str) -> pd.DataFrame:
-    """The only way later steps read raw data: verify the whole snapshot, then read one file as text columns."""
+    """The only way later steps read data: verify the whole folder's manifest, then read one file."""
     manifest = verify_snapshot(snap_dir)
     return pd.read_csv(Path(snap_dir) / manifest["files"][name]["file"])
+
+
+def write_derived(out_dir, frames: dict, meta: dict) -> dict:
+    """Write derived tables plus a manifest, replacing any previous version atomically.
+
+    No timestamps go into the manifest, so the same inputs give byte-identical files and hashes.
+    """
+    out_dir = Path(out_dir)
+    tmp = out_dir.with_name(out_dir.name + ".partial")
+    if tmp.exists():
+        shutil.rmtree(tmp)
+    tmp.mkdir(parents=True)
+    files = {}
+    for name, df in frames.items():
+        path = tmp / f"{name}.csv"
+        df.to_csv(path, index=False, lineterminator="\n")
+        files[name] = {"file": path.name, "rows": len(df), "sha256": sha256_file(path)}
+    (tmp / "manifest.json").write_text(json.dumps({**meta, "files": files}, indent=2, sort_keys=True) + "\n")
+    if out_dir.exists():
+        shutil.rmtree(out_dir)
+    tmp.rename(out_dir)
+    return verify_snapshot(out_dir)

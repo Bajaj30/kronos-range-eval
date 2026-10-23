@@ -8,9 +8,16 @@
 | group | meaning |
 |---|---|
 | CONFIG | settings in `config.py` |
+| CALENDAR | official NSE session calendar check, 2025-08-01 to 2026-10-22 |
+| CLEAN-BANKNIFTY | BANKNIFTY rows after cleaning, snapshot explore-2026-10-23 |
+| CLEAN-NIFTY | NIFTY rows after cleaning, snapshot explore-2026-10-23 |
 | RAW-BANKNIFTY | BANKNIFTY (^NSEBANK) daily rows exactly as received in snapshot explore-2026-10-23 |
 | RAW-NIFTY | NIFTY (^NSEI) daily rows exactly as received in snapshot explore-2026-10-23 |
 | SNAPSHOT | snapshot explore-2026-10-23 as a whole |
+| TEST-BANKNIFTY | BANKNIFTY days in the test window 2026-01-01 to 2026-10-22 |
+| TEST-NIFTY | NIFTY days in the test window 2026-01-01 to 2026-10-22 |
+| TUNE-BANKNIFTY | BANKNIFTY days in the tuning window 2025-09-01 to 2025-12-31 |
+| TUNE-NIFTY | NIFTY days in the tuning window 2025-09-01 to 2025-12-31 |
 
 ## Settings (group: CONFIG)
 
@@ -24,6 +31,13 @@
 | MARKET_TZ | Asia/Kolkata |
 | GAP_DAYS | 5 |
 | SPIKE_PCT | 20 |
+| ATR_PERIOD | 14 |
+| KRONOS_RELEASE | 2025-08-02 |
+| TUNE_START | 2025-09-01 |
+| TUNE_END | 2025-12-31 |
+| TEST_START | 2026-01-01 |
+| CALENDAR_START | 2025-08-01 |
+| HOLIDAY_YEARS | `[2025, 2026]` |
 
 ## Step 00 — Raw data profile
 
@@ -187,3 +201,126 @@ Source: `00b_profile.py`
 | date | only in |
 |---|---|
 | 2015-01-01 | BANKNIFTY |
+
+## Step 01 — Clean, calendar check, target and baselines
+
+Source: `01_clean_target_atr.py`
+
+| group | key | value | meaning |
+|---|---|---|---|
+| CALENDAR | expected_sessions | 301 | sessions that should have a daily bar |
+| CALENDAR | muhurat_dates_listed | 11 | Muhurat dates in muhurat_sessions.csv |
+| CALENDAR | muhurat_closes_matched | 6 | Muhurat dates whose NIFTY row equals the published Muhurat close |
+| CLEAN-NIFTY | dropped_pull_day_or_later | 1 | rows removed: pull_day_or_later (cleaning step 1) |
+| CLEAN-NIFTY | dropped_missing_price | 9 | rows removed: missing_price (cleaning step 2) |
+| CLEAN-NIFTY | dropped_muhurat_session | 6 | rows removed: muhurat_session (cleaning step 3) |
+| CLEAN-NIFTY | dropped_impossible_bar | 0 | rows removed: impossible_bar (cleaning step 4) |
+| CLEAN-NIFTY | rows | 2900 | rows kept |
+| CLEAN-NIFTY | first_date | 2015-01-02 | first kept date |
+| CLEAN-NIFTY | last_date | 2026-10-22 | last kept date (last complete day) |
+| CLEAN-NIFTY | atr_parity_max_rel_diff | 7.162e-16 | largest relative gap between our ATR(14) and the ta library's, tuning + test rows |
+| CALENDAR | missing_sessions_NIFTY | 1 | NIFTY: official sessions with no bar in the data |
+| CALENDAR | extra_rows_NIFTY | 0 | NIFTY: bars on dates that are not sessions |
+| TUNE-NIFTY | rows | 83 | rows in the window |
+| TUNE-NIFTY | scorable_days | 83 | days that will be scored (the n of every metric) |
+| TUNE-NIFTY | unscorable_days | 0 | days in the window that are not scored |
+| TEST-NIFTY | rows | 198 | rows in the window |
+| TEST-NIFTY | scorable_days | 197 | days that will be scored (the n of every metric) |
+| TEST-NIFTY | unscorable_days | 1 | days in the window that are not scored |
+| CLEAN-BANKNIFTY | dropped_pull_day_or_later | 1 | rows removed: pull_day_or_later (cleaning step 1) |
+| CLEAN-BANKNIFTY | dropped_missing_price | 5 | rows removed: missing_price (cleaning step 2) |
+| CLEAN-BANKNIFTY | dropped_muhurat_session | 6 | rows removed: muhurat_session (cleaning step 3) |
+| CLEAN-BANKNIFTY | dropped_impossible_bar | 1 | rows removed: impossible_bar (cleaning step 4) |
+| CLEAN-BANKNIFTY | rows | 2904 | rows kept |
+| CLEAN-BANKNIFTY | first_date | 2015-01-01 | first kept date |
+| CLEAN-BANKNIFTY | last_date | 2026-10-22 | last kept date (last complete day) |
+| CLEAN-BANKNIFTY | atr_parity_max_rel_diff | 6.809e-16 | largest relative gap between our ATR(14) and the ta library's, tuning + test rows |
+| CALENDAR | missing_sessions_BANKNIFTY | 1 | BANKNIFTY: official sessions with no bar in the data |
+| CALENDAR | extra_rows_BANKNIFTY | 0 | BANKNIFTY: bars on dates that are not sessions |
+| TUNE-BANKNIFTY | rows | 83 | rows in the window |
+| TUNE-BANKNIFTY | scorable_days | 83 | days that will be scored (the n of every metric) |
+| TUNE-BANKNIFTY | unscorable_days | 0 | days in the window that are not scored |
+| TEST-BANKNIFTY | rows | 198 | rows in the window |
+| TEST-BANKNIFTY | scorable_days | 197 | days that will be scored (the n of every metric) |
+| TEST-BANKNIFTY | unscorable_days | 1 | days in the window that are not scored |
+| CALENDAR | clean_sha256_BANKNIFTY | e45dd305e358aa3be3ea6487f7a63c97eeef580c28c4d9ebfe96859de87ea9e9 | sha256 of the cleaned BANKNIFTY.csv |
+| CALENDAR | clean_sha256_NIFTY | b9f05e7f000fc562c3871d6998daf6815ab3eb57770024de09b02716b323b3e5 | sha256 of the cleaned NIFTY.csv |
+
+**Muhurat dates checked against published closes** (group: CALENDAR)
+
+| date | published NIFTY close | Yahoo close | match |
+|---|---|---|---|
+| 2016-10-30 | 8625.70 | no row or no price | n/a |
+| 2017-10-19 | 10146.55 | 10146.55 | yes |
+| 2018-11-07 | 10598.40 | 10598.40 | yes |
+| 2019-10-27 | 11627.15 | no row or no price | n/a |
+| 2020-11-14 | 12780.25 | no row or no price | n/a |
+| 2021-11-04 | 17916.80 | 17916.80 | yes |
+| 2022-10-24 | 17730.75 | 17730.75 | yes |
+| 2023-11-12 | 19525.55 | no row or no price | n/a |
+| 2024-11-01 | 24304.35 | 24304.35 | yes |
+| 2025-10-21 | 25868.60 | 25868.60 | yes |
+| 2026-11-08 | — | no row or no price | n/a |
+
+**NIFTY test: days not scored** (group: TEST-NIFTY)
+
+| date | weekday | why |
+|---|---|---|
+| 2026-02-02 | Mon | previous session missing from the data |
+
+**NIFTY: official sessions missing from the data** (group: CALENDAR)
+
+| date | weekday | effect |
+|---|---|---|
+| 2026-02-01 | Sun | next session is not scored |
+
+**NIFTY: rows removed by cleaning** (group: CLEAN-NIFTY)
+
+| date | weekday | reason |
+|---|---|---|
+| 2015-02-28 | Sat | missing price |
+| 2015-04-15 | Wed | missing price |
+| 2016-01-01 | Fri | missing price |
+| 2016-08-12 | Fri | missing price |
+| 2017-10-19 | Thu | Muhurat session |
+| 2018-01-01 | Mon | missing price |
+| 2018-11-07 | Wed | Muhurat session |
+| 2019-01-01 | Tue | missing price |
+| 2019-10-27 | Sun | missing price |
+| 2020-11-14 | Sat | missing price |
+| 2021-11-04 | Thu | Muhurat session |
+| 2022-10-24 | Mon | Muhurat session |
+| 2024-11-01 | Fri | Muhurat session |
+| 2025-10-21 | Tue | Muhurat session |
+| 2026-01-15 | Thu | missing price |
+| 2026-10-23 | Fri | pull day (unfinished bar) |
+
+**BANKNIFTY test: days not scored** (group: TEST-BANKNIFTY)
+
+| date | weekday | why |
+|---|---|---|
+| 2026-02-02 | Mon | previous session missing from the data |
+
+**BANKNIFTY: official sessions missing from the data** (group: CALENDAR)
+
+| date | weekday | effect |
+|---|---|---|
+| 2026-02-01 | Sun | next session is not scored |
+
+**BANKNIFTY: rows removed by cleaning** (group: CLEAN-BANKNIFTY)
+
+| date | weekday | reason |
+|---|---|---|
+| 2015-02-28 | Sat | missing price |
+| 2016-11-10 | Thu | impossible bar |
+| 2017-10-19 | Thu | Muhurat session |
+| 2018-11-07 | Wed | Muhurat session |
+| 2019-10-27 | Sun | missing price |
+| 2020-11-14 | Sat | missing price |
+| 2021-11-04 | Thu | Muhurat session |
+| 2022-10-24 | Mon | Muhurat session |
+| 2024-11-01 | Fri | Muhurat session |
+| 2025-02-01 | Sat | missing price |
+| 2025-10-21 | Tue | Muhurat session |
+| 2026-01-15 | Thu | missing price |
+| 2026-10-23 | Fri | pull day (unfinished bar) |

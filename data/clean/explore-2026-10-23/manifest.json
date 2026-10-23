@@ -1,0 +1,38 @@
+{
+  "calendar_sha256": {
+    "muhurat_sessions.csv": "4a4999f9e4105198adc55172b6953964a1ee11c842b3e34bb6e9e34aa44f8bf8",
+    "nse_holidays_2025.json": "60be52880c7c1fb1239b35981afccf494f8f6d23e2ccb2461c9697dc9cc0e99e",
+    "nse_holidays_2026.json": "dd5f413d8b8ff9463c435dc238e24c19ac80ca89a1e973aef0980a82a2fe529d",
+    "special_sessions.csv": "5bba75dc8137266fa29ad3c9e39e3fcb740cc934d3267541cbb8977144fddc79"
+  },
+  "columns": [
+    "date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "tr_pct",
+    "atr_prev_pct",
+    "naive_prev_pct",
+    "window",
+    "scorable"
+  ],
+  "files": {
+    "BANKNIFTY": {
+      "file": "BANKNIFTY.csv",
+      "rows": 2904,
+      "sha256": "e45dd305e358aa3be3ea6487f7a63c97eeef580c28c4d9ebfe96859de87ea9e9"
+    },
+    "NIFTY": {
+      "file": "NIFTY.csv",
+      "rows": 2900,
+      "sha256": "b9f05e7f000fc562c3871d6998daf6815ab3eb57770024de09b02716b323b3e5"
+    }
+  },
+  "raw_sha256": {
+    "BANKNIFTY": "60ad50a802871a66e3a62abc2e40422fe3c9dbe637b92d30d47b1992ddb526a7",
+    "NIFTY": "64c011af0ccc78bcae33c5f867819d604598a308a78fd90fc35fc41efae7c316"
+  },
+  "raw_snapshot": "explore-2026-10-23",
+  "step": "01_clean_target_atr"
+}

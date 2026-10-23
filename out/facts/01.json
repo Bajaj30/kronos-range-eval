@@ -1,0 +1,549 @@
+{
+  "facts": [
+    {
+      "desc": "sessions that should have a daily bar",
+      "group": "CALENDAR",
+      "key": "expected_sessions",
+      "value": 301
+    },
+    {
+      "desc": "Muhurat dates in muhurat_sessions.csv",
+      "group": "CALENDAR",
+      "key": "muhurat_dates_listed",
+      "value": 11
+    },
+    {
+      "desc": "Muhurat dates whose NIFTY row equals the published Muhurat close",
+      "group": "CALENDAR",
+      "key": "muhurat_closes_matched",
+      "value": 6
+    },
+    {
+      "desc": "rows removed: pull_day_or_later (cleaning step 1)",
+      "group": "CLEAN-NIFTY",
+      "key": "dropped_pull_day_or_later",
+      "value": 1
+    },
+    {
+      "desc": "rows removed: missing_price (cleaning step 2)",
+      "group": "CLEAN-NIFTY",
+      "key": "dropped_missing_price",
+      "value": 9
+    },
+    {
+      "desc": "rows removed: muhurat_session (cleaning step 3)",
+      "group": "CLEAN-NIFTY",
+      "key": "dropped_muhurat_session",
+      "value": 6
+    },
+    {
+      "desc": "rows removed: impossible_bar (cleaning step 4)",
+      "group": "CLEAN-NIFTY",
+      "key": "dropped_impossible_bar",
+      "value": 0
+    },
+    {
+      "desc": "rows kept",
+      "group": "CLEAN-NIFTY",
+      "key": "rows",
+      "value": 2900
+    },
+    {
+      "desc": "first kept date",
+      "group": "CLEAN-NIFTY",
+      "key": "first_date",
+      "value": "2015-01-02"
+    },
+    {
+      "desc": "last kept date (last complete day)",
+      "group": "CLEAN-NIFTY",
+      "key": "last_date",
+      "value": "2026-10-22"
+    },
+    {
+      "desc": "largest relative gap between our ATR(14) and the ta library's, tuning + test rows",
+      "group": "CLEAN-NIFTY",
+      "key": "atr_parity_max_rel_diff",
+      "value": 7.162089920431383e-16
+    },
+    {
+      "desc": "NIFTY: official sessions with no bar in the data",
+      "group": "CALENDAR",
+      "key": "missing_sessions_NIFTY",
+      "value": 1
+    },
+    {
+      "desc": "NIFTY: bars on dates that are not sessions",
+      "group": "CALENDAR",
+      "key": "extra_rows_NIFTY",
+      "value": 0
+    },
+    {
+      "desc": "rows in the window",
+      "group": "TUNE-NIFTY",
+      "key": "rows",
+      "value": 83
+    },
+    {
+      "desc": "days that will be scored (the n of every metric)",
+      "group": "TUNE-NIFTY",
+      "key": "scorable_days",
+      "value": 83
+    },
+    {
+      "desc": "days in the window that are not scored",
+      "group": "TUNE-NIFTY",
+      "key": "unscorable_days",
+      "value": 0
+    },
+    {
+      "desc": "rows in the window",
+      "group": "TEST-NIFTY",
+      "key": "rows",
+      "value": 198
+    },
+    {
+      "desc": "days that will be scored (the n of every metric)",
+      "group": "TEST-NIFTY",
+      "key": "scorable_days",
+      "value": 197
+    },
+    {
+      "desc": "days in the window that are not scored",
+      "group": "TEST-NIFTY",
+      "key": "unscorable_days",
+      "value": 1
+    },
+    {
+      "desc": "rows removed: pull_day_or_later (cleaning step 1)",
+      "group": "CLEAN-BANKNIFTY",
+      "key": "dropped_pull_day_or_later",
+      "value": 1
+    },
+    {
+      "desc": "rows removed: missing_price (cleaning step 2)",
+      "group": "CLEAN-BANKNIFTY",
+      "key": "dropped_missing_price",
+      "value": 5
+    },
+    {
+      "desc": "rows removed: muhurat_session (cleaning step 3)",
+      "group": "CLEAN-BANKNIFTY",
+      "key": "dropped_muhurat_session",
+      "value": 6
+    },
+    {
+      "desc": "rows removed: impossible_bar (cleaning step 4)",
+      "group": "CLEAN-BANKNIFTY",
+      "key": "dropped_impossible_bar",
+      "value": 1
+    },
+    {
+      "desc": "rows kept",
+      "group": "CLEAN-BANKNIFTY",
+      "key": "rows",
+      "value": 2904
+    },
+    {
+      "desc": "first kept date",
+      "group": "CLEAN-BANKNIFTY",
+      "key": "first_date",
+      "value": "2015-01-01"
+    },
+    {
+      "desc": "last kept date (last complete day)",
+      "group": "CLEAN-BANKNIFTY",
+      "key": "last_date",
+      "value": "2026-10-22"
+    },
+    {
+      "desc": "largest relative gap between our ATR(14) and the ta library's, tuning + test rows",
+      "group": "CLEAN-BANKNIFTY",
+      "key": "atr_parity_max_rel_diff",
+      "value": 6.808935060460381e-16
+    },
+    {
+      "desc": "BANKNIFTY: official sessions with no bar in the data",
+      "group": "CALENDAR",
+      "key": "missing_sessions_BANKNIFTY",
+      "value": 1
+    },
+    {
+      "desc": "BANKNIFTY: bars on dates that are not sessions",
+      "group": "CALENDAR",
+      "key": "extra_rows_BANKNIFTY",
+      "value": 0
+    },
+    {
+      "desc": "rows in the window",
+      "group": "TUNE-BANKNIFTY",
+      "key": "rows",
+      "value": 83
+    },
+    {
+      "desc": "days that will be scored (the n of every metric)",
+      "group": "TUNE-BANKNIFTY",
+      "key": "scorable_days",
+      "value": 83
+    },
+    {
+      "desc": "days in the window that are not scored",
+      "group": "TUNE-BANKNIFTY",
+      "key": "unscorable_days",
+      "value": 0
+    },
+    {
+      "desc": "rows in the window",
+      "group": "TEST-BANKNIFTY",
+      "key": "rows",
+      "value": 198
+    },
+    {
+      "desc": "days that will be scored (the n of every metric)",
+      "group": "TEST-BANKNIFTY",
+      "key": "scorable_days",
+      "value": 197
+    },
+    {
+      "desc": "days in the window that are not scored",
+      "group": "TEST-BANKNIFTY",
+      "key": "unscorable_days",
+      "value": 1
+    },
+    {
+      "desc": "sha256 of the cleaned BANKNIFTY.csv",
+      "group": "CALENDAR",
+      "key": "clean_sha256_BANKNIFTY",
+      "value": "e45dd305e358aa3be3ea6487f7a63c97eeef580c28c4d9ebfe96859de87ea9e9"
+    },
+    {
+      "desc": "sha256 of the cleaned NIFTY.csv",
+      "group": "CALENDAR",
+      "key": "clean_sha256_NIFTY",
+      "value": "b9f05e7f000fc562c3871d6998daf6815ab3eb57770024de09b02716b323b3e5"
+    }
+  ],
+  "groups": {
+    "CALENDAR": "official NSE session calendar check, 2025-08-01 to 2026-10-22",
+    "CLEAN-BANKNIFTY": "BANKNIFTY rows after cleaning, snapshot explore-2026-10-23",
+    "CLEAN-NIFTY": "NIFTY rows after cleaning, snapshot explore-2026-10-23",
+    "TEST-BANKNIFTY": "BANKNIFTY days in the test window 2026-01-01 to 2026-10-22",
+    "TEST-NIFTY": "NIFTY days in the test window 2026-01-01 to 2026-10-22",
+    "TUNE-BANKNIFTY": "BANKNIFTY days in the tuning window 2025-09-01 to 2025-12-31",
+    "TUNE-NIFTY": "NIFTY days in the tuning window 2025-09-01 to 2025-12-31"
+  },
+  "source": "01_clean_target_atr.py",
+  "step": "01",
+  "tables": [
+    {
+      "columns": [
+        "date",
+        "published NIFTY close",
+        "Yahoo close",
+        "match"
+      ],
+      "group": "CALENDAR",
+      "rows": [
+        [
+          "2016-10-30",
+          "8625.70",
+          "no row or no price",
+          "n/a"
+        ],
+        [
+          "2017-10-19",
+          "10146.55",
+          "10146.55",
+          "yes"
+        ],
+        [
+          "2018-11-07",
+          "10598.40",
+          "10598.40",
+          "yes"
+        ],
+        [
+          "2019-10-27",
+          "11627.15",
+          "no row or no price",
+          "n/a"
+        ],
+        [
+          "2020-11-14",
+          "12780.25",
+          "no row or no price",
+          "n/a"
+        ],
+        [
+          "2021-11-04",
+          "17916.80",
+          "17916.80",
+          "yes"
+        ],
+        [
+          "2022-10-24",
+          "17730.75",
+          "17730.75",
+          "yes"
+        ],
+        [
+          "2023-11-12",
+          "19525.55",
+          "no row or no price",
+          "n/a"
+        ],
+        [
+          "2024-11-01",
+          "24304.35",
+          "24304.35",
+          "yes"
+        ],
+        [
+          "2025-10-21",
+          "25868.60",
+          "25868.60",
+          "yes"
+        ],
+        [
+          "2026-11-08",
+          "\u2014",
+          "no row or no price",
+          "n/a"
+        ]
+      ],
+      "title": "Muhurat dates checked against published closes"
+    },
+    {
+      "columns": [
+        "date",
+        "weekday",
+        "why"
+      ],
+      "group": "TEST-NIFTY",
+      "rows": [
+        [
+          "2026-02-02",
+          "Mon",
+          "previous session missing from the data"
+        ]
+      ],
+      "title": "NIFTY test: days not scored"
+    },
+    {
+      "columns": [
+        "date",
+        "weekday",
+        "effect"
+      ],
+      "group": "CALENDAR",
+      "rows": [
+        [
+          "2026-02-01",
+          "Sun",
+          "next session is not scored"
+        ]
+      ],
+      "title": "NIFTY: official sessions missing from the data"
+    },
+    {
+      "columns": [
+        "date",
+        "weekday",
+        "reason"
+      ],
+      "group": "CLEAN-NIFTY",
+      "rows": [
+        [
+          "2015-02-28",
+          "Sat",
+          "missing price"
+        ],
+        [
+          "2015-04-15",
+          "Wed",
+          "missing price"
+        ],
+        [
+          "2016-01-01",
+          "Fri",
+          "missing price"
+        ],
+        [
+          "2016-08-12",
+          "Fri",
+          "missing price"
+        ],
+        [
+          "2017-10-19",
+          "Thu",
+          "Muhurat session"
+        ],
+        [
+          "2018-01-01",
+          "Mon",
+          "missing price"
+        ],
+        [
+          "2018-11-07",
+          "Wed",
+          "Muhurat session"
+        ],
+        [
+          "2019-01-01",
+          "Tue",
+          "missing price"
+        ],
+        [
+          "2019-10-27",
+          "Sun",
+          "missing price"
+        ],
+        [
+          "2020-11-14",
+          "Sat",
+          "missing price"
+        ],
+        [
+          "2021-11-04",
+          "Thu",
+          "Muhurat session"
+        ],
+        [
+          "2022-10-24",
+          "Mon",
+          "Muhurat session"
+        ],
+        [
+          "2024-11-01",
+          "Fri",
+          "Muhurat session"
+        ],
+        [
+          "2025-10-21",
+          "Tue",
+          "Muhurat session"
+        ],
+        [
+          "2026-01-15",
+          "Thu",
+          "missing price"
+        ],
+        [
+          "2026-10-23",
+          "Fri",
+          "pull day (unfinished bar)"
+        ]
+      ],
+      "title": "NIFTY: rows removed by cleaning"
+    },
+    {
+      "columns": [
+        "date",
+        "weekday",
+        "why"
+      ],
+      "group": "TEST-BANKNIFTY",
+      "rows": [
+        [
+          "2026-02-02",
+          "Mon",
+          "previous session missing from the data"
+        ]
+      ],
+      "title": "BANKNIFTY test: days not scored"
+    },
+    {
+      "columns": [
+        "date",
+        "weekday",
+        "effect"
+      ],
+      "group": "CALENDAR",
+      "rows": [
+        [
+          "2026-02-01",
+          "Sun",
+          "next session is not scored"
+        ]
+      ],
+      "title": "BANKNIFTY: official sessions missing from the data"
+    },
+    {
+      "columns": [
+        "date",
+        "weekday",
+        "reason"
+      ],
+      "group": "CLEAN-BANKNIFTY",
+      "rows": [
+        [
+          "2015-02-28",
+          "Sat",
+          "missing price"
+        ],
+        [
+          "2016-11-10",
+          "Thu",
+          "impossible bar"
+        ],
+        [
+          "2017-10-19",
+          "Thu",
+          "Muhurat session"
+        ],
+        [
+          "2018-11-07",
+          "Wed",
+          "Muhurat session"
+        ],
+        [
+          "2019-10-27",
+          "Sun",
+          "missing price"
+        ],
+        [
+          "2020-11-14",
+          "Sat",
+          "missing price"
+        ],
+        [
+          "2021-11-04",
+          "Thu",
+          "Muhurat session"
+        ],
+        [
+          "2022-10-24",
+          "Mon",
+          "Muhurat session"
+        ],
+        [
+          "2024-11-01",
+          "Fri",
+          "Muhurat session"
+        ],
+        [
+          "2025-02-01",
+          "Sat",
+          "missing price"
+        ],
+        [
+          "2025-10-21",
+          "Tue",
+          "Muhurat session"
+        ],
+        [
+          "2026-01-15",
+          "Thu",
+          "missing price"
+        ],
+        [
+          "2026-10-23",
+          "Fri",
+          "pull day (unfinished bar)"
+        ]
+      ],
+      "title": "BANKNIFTY: rows removed by cleaning"
+    }
+  ],
+  "title": "Clean, calendar check, target and baselines"
+}

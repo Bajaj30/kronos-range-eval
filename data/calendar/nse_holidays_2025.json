@@ -1,0 +1,97 @@
+{
+  "source_url": "https://www.nseindia.com/api/holiday-master?type=trading&year=2025",
+  "segment": "FO",
+  "retrieved_utc": "2026-10-23T18:40:25+00:00",
+  "holidays": [
+    {
+      "date": "2025-01-26",
+      "weekday": "Sunday",
+      "description": "Republic Day"
+    },
+    {
+      "date": "2025-02-26",
+      "weekday": "Wednesday",
+      "description": "Mahashivratri"
+    },
+    {
+      "date": "2025-03-14",
+      "weekday": "Friday",
+      "description": "Holi"
+    },
+    {
+      "date": "2025-03-31",
+      "weekday": "Monday",
+      "description": "Id-Ul-Fitr (Ramadan Eid)"
+    },
+    {
+      "date": "2025-04-06",
+      "weekday": "Sunday",
+      "description": "Shri Ram Navami"
+    },
+    {
+      "date": "2025-04-10",
+      "weekday": "Thursday",
+      "description": "Shri Mahavir Jayanti"
+    },
+    {
+      "date": "2025-04-14",
+      "weekday": "Monday",
+      "description": "Dr. Baba Saheb Ambedkar Jayanti"
+    },
+    {
+      "date": "2025-04-18",
+      "weekday": "Friday",
+      "description": "Good Friday"
+    },
+    {
+      "date": "2025-05-01",
+      "weekday": "Thursday",
+      "description": "Maharashtra Day"
+    },
+    {
+      "date": "2025-06-07",
+      "weekday": "Saturday",
+      "description": "Bakri Id"
+    },
+    {
+      "date": "2025-07-06",
+      "weekday": "Sunday",
+      "description": "Muharram"
+    },
+    {
+      "date": "2025-08-15",
+      "weekday": "Friday",
+      "description": "Independence Day / Parsi New Year"
+    },
+    {
+      "date": "2025-08-27",
+      "weekday": "Wednesday",
+      "description": "Shri Ganesh Chaturthi"
+    },
+    {
+      "date": "2025-10-02",
+      "weekday": "Thursday",
+      "description": "Mahatma Gandhi Jayanti/Dussehra"
+    },
+    {
+      "date": "2025-10-21",
+      "weekday": "Tuesday",
+      "description": "Diwali Laxmi Pujan"
+    },
+    {
+      "date": "2025-10-22",
+      "weekday": "Wednesday",
+      "description": "Balipratipada"
+    },
+    {
+      "date": "2025-11-05",
+      "weekday": "Wednesday",
+      "description": "Prakash Gurpurb Sri Guru Nanak Dev"
+    },
+    {
+      "date": "2025-12-25",
+      "weekday": "Thursday",
+      "description": "Christmas"
+    }
+  ]
+}

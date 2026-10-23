@@ -4,9 +4,11 @@ __pycache__/
 .pytest_cache/
 .DS_Store
 
-# raw market data is not redistributed (D19); the manifest with sha256 is committed
+# market data (raw and derived) is not redistributed (D19); manifests with sha256 are committed
 data/raw/**/*.csv
 data/raw/*.partial/
+data/clean/**/*.csv
+data/clean/*.partial/
 
 # private interview prep (D17)
 INTERVIEW.md
