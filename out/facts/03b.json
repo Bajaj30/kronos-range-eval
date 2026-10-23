@@ -1,0 +1,36 @@
+{
+  "facts": [
+    {
+      "desc": "sampled prices compared (days x samples x 4)",
+      "group": "RERUN-NIFTY",
+      "key": "values_compared",
+      "value": 1660000
+    },
+    {
+      "desc": "regenerated samples equal the cache, bit for bit",
+      "group": "RERUN-NIFTY",
+      "key": "identical",
+      "value": true
+    },
+    {
+      "desc": "sampled prices compared (days x samples x 4)",
+      "group": "RERUN-BANKNIFTY",
+      "key": "values_compared",
+      "value": 1660000
+    },
+    {
+      "desc": "regenerated samples equal the cache, bit for bit",
+      "group": "RERUN-BANKNIFTY",
+      "key": "identical",
+      "value": true
+    }
+  ],
+  "groups": {
+    "RERUN-BANKNIFTY": "BANKNIFTY tuning samples for the chosen setting, regenerated in a new process vs the cached file",
+    "RERUN-NIFTY": "NIFTY tuning samples for the chosen setting, regenerated in a new process vs the cached file"
+  },
+  "source": "tools/recheck_determinism.py",
+  "step": "03b",
+  "tables": [],
+  "title": "Determinism re-check of the tuning samples"
+}

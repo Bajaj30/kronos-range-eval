@@ -1,0 +1,305 @@
+{
+  "facts": [
+    {
+      "desc": "sampling temperature chosen (D9)",
+      "group": "TUNE-CHOSEN",
+      "key": "chosen_T",
+      "value": 0.6
+    },
+    {
+      "desc": "nucleus threshold chosen (D9)",
+      "group": "TUNE-CHOSEN",
+      "key": "chosen_top_p",
+      "value": 0.9
+    },
+    {
+      "desc": "Kronos MAE / ATR MAE, mean of both indices",
+      "group": "TUNE-CHOSEN",
+      "key": "chosen_mean_ratio",
+      "value": 1.2018811419530726
+    },
+    {
+      "desc": "NIFTY: Kronos calibration factor (median actual / median forecast)",
+      "group": "TUNE-CHOSEN",
+      "key": "NIFTY_kronos_scale",
+      "value": 1.0693212517315005
+    },
+    {
+      "desc": "NIFTY: ATR calibration factor (median actual / ATR)",
+      "group": "TUNE-CHOSEN",
+      "key": "NIFTY_atr_scale",
+      "value": 0.9725840153460374
+    },
+    {
+      "desc": "NIFTY: ATR band as multiples of ATR (10th, 90th percentile of actual / ATR)",
+      "group": "TUNE-CHOSEN",
+      "key": "NIFTY_atr_band",
+      "value": [
+        0.617,
+        1.3274
+      ]
+    },
+    {
+      "desc": "NIFTY: naive calibration factor",
+      "group": "TUNE-CHOSEN",
+      "key": "NIFTY_naive_scale",
+      "value": 0.9860424761230991
+    },
+    {
+      "desc": "NIFTY: share of tuning days inside the calibrated Kronos band",
+      "group": "TUNE-CHOSEN",
+      "key": "NIFTY_kronos_coverage",
+      "value": 0.6506024096385542
+    },
+    {
+      "desc": "NIFTY: share inside the ATR band (80% by construction, in-sample)",
+      "group": "TUNE-CHOSEN",
+      "key": "NIFTY_atr_coverage",
+      "value": 0.7831325301204819
+    },
+    {
+      "desc": "NIFTY: naive MAE / ATR MAE (context)",
+      "group": "TUNE-CHOSEN",
+      "key": "NIFTY_naive_vs_atr_ratio",
+      "value": 1.2793972257976196
+    },
+    {
+      "desc": "BANKNIFTY: Kronos calibration factor (median actual / median forecast)",
+      "group": "TUNE-CHOSEN",
+      "key": "BANKNIFTY_kronos_scale",
+      "value": 0.8101931521104597
+    },
+    {
+      "desc": "BANKNIFTY: ATR calibration factor (median actual / ATR)",
+      "group": "TUNE-CHOSEN",
+      "key": "BANKNIFTY_atr_scale",
+      "value": 0.9681175653202366
+    },
+    {
+      "desc": "BANKNIFTY: ATR band as multiples of ATR (10th, 90th percentile of actual / ATR)",
+      "group": "TUNE-CHOSEN",
+      "key": "BANKNIFTY_atr_band",
+      "value": [
+        0.6086,
+        1.3826
+      ]
+    },
+    {
+      "desc": "BANKNIFTY: naive calibration factor",
+      "group": "TUNE-CHOSEN",
+      "key": "BANKNIFTY_naive_scale",
+      "value": 0.9933385225965503
+    },
+    {
+      "desc": "BANKNIFTY: share of tuning days inside the calibrated Kronos band",
+      "group": "TUNE-CHOSEN",
+      "key": "BANKNIFTY_kronos_coverage",
+      "value": 0.7469879518072289
+    },
+    {
+      "desc": "BANKNIFTY: share inside the ATR band (80% by construction, in-sample)",
+      "group": "TUNE-CHOSEN",
+      "key": "BANKNIFTY_atr_coverage",
+      "value": 0.7831325301204819
+    },
+    {
+      "desc": "BANKNIFTY: naive MAE / ATR MAE (context)",
+      "group": "TUNE-CHOSEN",
+      "key": "BANKNIFTY_naive_vs_atr_ratio",
+      "value": 1.3599388785303936
+    },
+    {
+      "desc": "commit that froze PREREG.md (pushed before this run)",
+      "group": "TUNE-RUN",
+      "key": "prereg_commit",
+      "value": "0f1727bb85a868b0b6ad7b42847b44f2c2a0b19c"
+    },
+    {
+      "desc": "when PREREG.md was committed",
+      "group": "TUNE-RUN",
+      "key": "prereg_committed_utc",
+      "value": "2026-10-24T04:39:54+05:30"
+    },
+    {
+      "desc": "sample files made in this run (0 = all reused from cache)",
+      "group": "TUNE-RUN",
+      "key": "sample_files_computed",
+      "value": 12
+    },
+    {
+      "desc": "wall-clock for sampling + scoring (a measurement)",
+      "group": "TUNE-RUN",
+      "key": "sampling_seconds",
+      "value": 398.86465387500357
+    }
+  ],
+  "groups": {
+    "TUNE-CHOSEN": "the chosen setting T=0.6, top_p=0.9, on the tuning window; these factors are frozen for the test",
+    "TUNE-GRID": "tuning window 2025-09-01 to 2025-12-31, scorable days (NIFTY n = 83, BANKNIFTY n = 83), seed 1, 5000 samples/day; calibration fitted and scored on the same days (in-sample)",
+    "TUNE-RUN": "how the tuning run was made"
+  },
+  "source": "03_tune.py",
+  "step": "03",
+  "tables": [
+    {
+      "columns": [
+        "T",
+        "top_p",
+        "NIFTY ratio",
+        "NIFTY coverage",
+        "NIFTY distinct values",
+        "BANKNIFTY ratio",
+        "BANKNIFTY coverage",
+        "BANKNIFTY distinct values",
+        "mean ratio",
+        ""
+      ],
+      "group": "TUNE-GRID",
+      "rows": [
+        [
+          0.6,
+          0.9,
+          "1.1658",
+          "0.651",
+          "12",
+          "1.2380",
+          "0.747",
+          "12",
+          "1.2019",
+          "chosen"
+        ],
+        [
+          0.6,
+          0.99,
+          "1.1733",
+          "0.711",
+          "24",
+          "1.2446",
+          "0.807",
+          "35",
+          "1.2089",
+          ""
+        ],
+        [
+          0.8,
+          0.9,
+          "1.1385",
+          "0.759",
+          "15",
+          "1.3093",
+          "0.831",
+          "18",
+          "1.2239",
+          ""
+        ],
+        [
+          0.8,
+          0.99,
+          "1.1676",
+          "0.831",
+          "42",
+          "1.3317",
+          "0.819",
+          "50",
+          "1.2497",
+          ""
+        ],
+        [
+          1.0,
+          0.9,
+          "1.1575",
+          "0.819",
+          "18",
+          "1.3422",
+          "0.831",
+          "28",
+          "1.2498",
+          ""
+        ],
+        [
+          1.0,
+          0.99,
+          "1.1519",
+          "0.904",
+          "70",
+          "1.4318",
+          "0.880",
+          "120",
+          "1.2918",
+          ""
+        ]
+      ],
+      "title": "Tuning grid: Kronos MAE / ATR MAE (calibrated), Kronos band coverage, distinct sample TR% values per day (median)"
+    },
+    {
+      "columns": [
+        "index",
+        "method",
+        "MAE",
+        "MAE raw",
+        "coverage",
+        "band width",
+        "interval score"
+      ],
+      "group": "TUNE-CHOSEN",
+      "rows": [
+        [
+          "NIFTY",
+          "kronos",
+          "0.1872",
+          "0.1864",
+          "0.651",
+          "0.5800",
+          "0.9212"
+        ],
+        [
+          "NIFTY",
+          "atr",
+          "0.1606",
+          "0.1610",
+          "0.783",
+          "0.5381",
+          "0.7408"
+        ],
+        [
+          "NIFTY",
+          "naive",
+          "0.2054",
+          "0.2077",
+          "0.783",
+          "0.6232",
+          "0.9276"
+        ],
+        [
+          "BANKNIFTY",
+          "kronos",
+          "0.2405",
+          "0.3181",
+          "0.747",
+          "0.9385",
+          "1.2379"
+        ],
+        [
+          "BANKNIFTY",
+          "atr",
+          "0.1943",
+          "0.1951",
+          "0.783",
+          "0.6603",
+          "0.8926"
+        ],
+        [
+          "BANKNIFTY",
+          "naive",
+          "0.2642",
+          "0.2651",
+          "0.783",
+          "0.9781",
+          "1.2453"
+        ]
+      ],
+      "title": "Chosen setting on the tuning window, per method (TR% points)"
+    }
+  ],
+  "title": "Tuning (Sep-Dec 2025)"
+}

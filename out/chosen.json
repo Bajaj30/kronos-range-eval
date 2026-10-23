@@ -1,0 +1,91 @@
+{
+  "T": 0.6,
+  "band": [
+    0.1,
+    0.9
+  ],
+  "calibration": {
+    "BANKNIFTY": {
+      "atr": {
+        "band_hi": 1.3825641024911464,
+        "band_lo": 0.6085543411770623,
+        "scale": 0.9681175653202366
+      },
+      "kronos": {
+        "scale": 0.8101931521104597
+      },
+      "naive": {
+        "band_hi": 1.799305100312787,
+        "band_lo": 0.6217245682191044,
+        "scale": 0.9933385225965503
+      }
+    },
+    "NIFTY": {
+      "atr": {
+        "band_hi": 1.327397691377092,
+        "band_lo": 0.6169871030050629,
+        "scale": 0.9725840153460374
+      },
+      "kronos": {
+        "scale": 1.0693212517315005
+      },
+      "naive": {
+        "band_hi": 1.4989157270485576,
+        "band_lo": 0.6563064409710005,
+        "scale": 0.9860424761230991
+      }
+    }
+  },
+  "clean_sha256": {
+    "BANKNIFTY": "e45dd305e358aa3be3ea6487f7a63c97eeef580c28c4d9ebfe96859de87ea9e9",
+    "NIFTY": "b9f05e7f000fc562c3871d6998daf6815ab3eb57770024de09b02716b323b3e5"
+  },
+  "code": {
+    "commit": "e0a14182ba21189df8e6b3e8cfc87cabeaaeb616",
+    "dirty": false,
+    "edited": []
+  },
+  "context_days": 400,
+  "device": "cpu",
+  "kronos": {
+    "commit": "67b630e67f6a18c9e9be918d9b4337c960db1e9a",
+    "model": "NeoQuasar/Kronos-small",
+    "model_rev": "901c26c1332695a2a8f243eb2f37243a37bea320",
+    "model_sha256": "b082dfcbd8e8c142a725c8bbb99781802f38fec81210e13479effb32b3c3e020",
+    "tokenizer": "NeoQuasar/Kronos-Tokenizer-base",
+    "tokenizer_rev": "0e0117387f39004a9016484a186a908917e22426",
+    "tokenizer_sha256": "59d85f6af76a2c3b8240ea06cb21db4213b4eeca053f246b23e29cf832fc6bee"
+  },
+  "mean_tune_ratio": 1.2018811419530726,
+  "n_samples": 5000,
+  "prereg": {
+    "commit": "0f1727bb85a868b0b6ad7b42847b44f2c2a0b19c",
+    "committed_utc": "2026-10-24T04:39:54+05:30",
+    "sha256": "9a1abce67478add800fa2f80436cfae1809befe7a2b261e00b67e14c11bc12ef"
+  },
+  "raw_sha256": {
+    "BANKNIFTY": "59955330f6167c3d81bb0daf91ba08472ca227412508e7db64addeff15cb8ed4",
+    "NIFTY": "74da4453bad563f82a9ab540d0eccab3ce038f79f0eb560d70d676c8a03f5720"
+  },
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "snapshot_id": "frozen-2026-10-24",
+  "top_k": 0,
+  "top_p": 0.9,
+  "tune_days": {
+    "BANKNIFTY": 83,
+    "NIFTY": 83
+  },
+  "versions": {
+    "huggingface_hub": "2.3.0",
+    "machine": "arm64",
+    "numpy": "2.4.6",
+    "pandas": "3.1.0",
+    "python": "3.11.13",
+    "torch": "2.14.1",
+    "torch_threads": 4
+  }
+}

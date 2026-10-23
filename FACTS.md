@@ -13,6 +13,8 @@
 | CLEAN-NIFTY | NIFTY rows after cleaning, snapshot frozen-2026-10-24 |
 | RAW-BANKNIFTY | BANKNIFTY (^NSEBANK) daily rows exactly as received in snapshot frozen-2026-10-24 |
 | RAW-NIFTY | NIFTY (^NSEI) daily rows exactly as received in snapshot frozen-2026-10-24 |
+| RERUN-BANKNIFTY | BANKNIFTY tuning samples for the chosen setting, regenerated in a new process vs the cached file |
+| RERUN-NIFTY | NIFTY tuning samples for the chosen setting, regenerated in a new process vs the cached file |
 | REVISIONS | raw rows of snapshot frozen-2026-10-24 compared with the same dates in explore-2026-10-23 |
 | SMOKE | Kronos-small smoke test on NIFTY, the 5 days before 2025-09-01 (2025-08-22 to 2025-08-29); T=1.0, top_p=0.9 |
 | SNAPSHOT | snapshot frozen-2026-10-24 as a whole |
@@ -20,7 +22,10 @@
 | TEST-NIFTY | NIFTY days in the test window 2026-01-01 to 2026-10-23 |
 | TIMING | wall-clock on this machine, device=cpu, torch 2.14.1, 4 threads (a measurement: varies run to run) |
 | TUNE-BANKNIFTY | BANKNIFTY days in the tuning window 2025-09-01 to 2025-12-31 |
+| TUNE-CHOSEN | the chosen setting T=0.6, top_p=0.9, on the tuning window; these factors are frozen for the test |
+| TUNE-GRID | tuning window 2025-09-01 to 2025-12-31, scorable days (NIFTY n = 83, BANKNIFTY n = 83), seed 1, 5000 samples/day; calibration fitted and scored on the same days (in-sample) |
 | TUNE-NIFTY | NIFTY days in the tuning window 2025-09-01 to 2025-12-31 |
+| TUNE-RUN | how the tuning run was made |
 
 ## Settings (group: CONFIG)
 
@@ -401,3 +406,64 @@ Source: `02_kronos_smoke.py`
 | 2025-08-26 | Tue | 1.114 | 0.791 | 0.609 | 0.794 | 0.537 – 0.879 | 10 |
 | 2025-08-28 | Thu | 0.933 | 0.822 | 1.114 | 0.831 | 0.667 – 1.110 | 16 |
 | 2025-08-29 | Fri | 0.685 | 0.837 | 0.933 | 0.918 | 0.799 – 1.179 | 27 |
+
+## Step 03 — Tuning (Sep-Dec 2025)
+
+Source: `03_tune.py`
+
+| group | key | value | meaning |
+|---|---|---|---|
+| TUNE-CHOSEN | chosen_T | 0.6 | sampling temperature chosen (D9) |
+| TUNE-CHOSEN | chosen_top_p | 0.9 | nucleus threshold chosen (D9) |
+| TUNE-CHOSEN | chosen_mean_ratio | 1.202 | Kronos MAE / ATR MAE, mean of both indices |
+| TUNE-CHOSEN | NIFTY_kronos_scale | 1.069 | NIFTY: Kronos calibration factor (median actual / median forecast) |
+| TUNE-CHOSEN | NIFTY_atr_scale | 0.9726 | NIFTY: ATR calibration factor (median actual / ATR) |
+| TUNE-CHOSEN | NIFTY_atr_band | `[0.617, 1.3274]` | NIFTY: ATR band as multiples of ATR (10th, 90th percentile of actual / ATR) |
+| TUNE-CHOSEN | NIFTY_naive_scale | 0.986 | NIFTY: naive calibration factor |
+| TUNE-CHOSEN | NIFTY_kronos_coverage | 0.6506 | NIFTY: share of tuning days inside the calibrated Kronos band |
+| TUNE-CHOSEN | NIFTY_atr_coverage | 0.7831 | NIFTY: share inside the ATR band (80% by construction, in-sample) |
+| TUNE-CHOSEN | NIFTY_naive_vs_atr_ratio | 1.279 | NIFTY: naive MAE / ATR MAE (context) |
+| TUNE-CHOSEN | BANKNIFTY_kronos_scale | 0.8102 | BANKNIFTY: Kronos calibration factor (median actual / median forecast) |
+| TUNE-CHOSEN | BANKNIFTY_atr_scale | 0.9681 | BANKNIFTY: ATR calibration factor (median actual / ATR) |
+| TUNE-CHOSEN | BANKNIFTY_atr_band | `[0.6086, 1.3826]` | BANKNIFTY: ATR band as multiples of ATR (10th, 90th percentile of actual / ATR) |
+| TUNE-CHOSEN | BANKNIFTY_naive_scale | 0.9933 | BANKNIFTY: naive calibration factor |
+| TUNE-CHOSEN | BANKNIFTY_kronos_coverage | 0.747 | BANKNIFTY: share of tuning days inside the calibrated Kronos band |
+| TUNE-CHOSEN | BANKNIFTY_atr_coverage | 0.7831 | BANKNIFTY: share inside the ATR band (80% by construction, in-sample) |
+| TUNE-CHOSEN | BANKNIFTY_naive_vs_atr_ratio | 1.36 | BANKNIFTY: naive MAE / ATR MAE (context) |
+| TUNE-RUN | prereg_commit | 0f1727bb85a868b0b6ad7b42847b44f2c2a0b19c | commit that froze PREREG.md (pushed before this run) |
+| TUNE-RUN | prereg_committed_utc | 2026-10-24T04:39:54+05:30 | when PREREG.md was committed |
+| TUNE-RUN | sample_files_computed | 12 | sample files made in this run (0 = all reused from cache) |
+| TUNE-RUN | sampling_seconds | 398.9 | wall-clock for sampling + scoring (a measurement) |
+
+**Tuning grid: Kronos MAE / ATR MAE (calibrated), Kronos band coverage, distinct sample TR% values per day (median)** (group: TUNE-GRID)
+
+| T | top_p | NIFTY ratio | NIFTY coverage | NIFTY distinct values | BANKNIFTY ratio | BANKNIFTY coverage | BANKNIFTY distinct values | mean ratio |  |
+|---|---|---|---|---|---|---|---|---|---|
+| 0.6 | 0.9 | 1.1658 | 0.651 | 12 | 1.2380 | 0.747 | 12 | 1.2019 | chosen |
+| 0.6 | 0.99 | 1.1733 | 0.711 | 24 | 1.2446 | 0.807 | 35 | 1.2089 |  |
+| 0.8 | 0.9 | 1.1385 | 0.759 | 15 | 1.3093 | 0.831 | 18 | 1.2239 |  |
+| 0.8 | 0.99 | 1.1676 | 0.831 | 42 | 1.3317 | 0.819 | 50 | 1.2497 |  |
+| 1 | 0.9 | 1.1575 | 0.819 | 18 | 1.3422 | 0.831 | 28 | 1.2498 |  |
+| 1 | 0.99 | 1.1519 | 0.904 | 70 | 1.4318 | 0.880 | 120 | 1.2918 |  |
+
+**Chosen setting on the tuning window, per method (TR% points)** (group: TUNE-CHOSEN)
+
+| index | method | MAE | MAE raw | coverage | band width | interval score |
+|---|---|---|---|---|---|---|
+| NIFTY | kronos | 0.1872 | 0.1864 | 0.651 | 0.5800 | 0.9212 |
+| NIFTY | atr | 0.1606 | 0.1610 | 0.783 | 0.5381 | 0.7408 |
+| NIFTY | naive | 0.2054 | 0.2077 | 0.783 | 0.6232 | 0.9276 |
+| BANKNIFTY | kronos | 0.2405 | 0.3181 | 0.747 | 0.9385 | 1.2379 |
+| BANKNIFTY | atr | 0.1943 | 0.1951 | 0.783 | 0.6603 | 0.8926 |
+| BANKNIFTY | naive | 0.2642 | 0.2651 | 0.783 | 0.9781 | 1.2453 |
+
+## Step 03b — Determinism re-check of the tuning samples
+
+Source: `tools/recheck_determinism.py`
+
+| group | key | value | meaning |
+|---|---|---|---|
+| RERUN-NIFTY | values_compared | 1660000 | sampled prices compared (days x samples x 4) |
+| RERUN-NIFTY | identical | True | regenerated samples equal the cache, bit for bit |
+| RERUN-BANKNIFTY | values_compared | 1660000 | sampled prices compared (days x samples x 4) |
+| RERUN-BANKNIFTY | identical | True | regenerated samples equal the cache, bit for bit |
