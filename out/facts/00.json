@@ -4,19 +4,19 @@
       "desc": "snapshot id",
       "group": "SNAPSHOT",
       "key": "snapshot_id",
-      "value": "explore-2026-10-23"
+      "value": "frozen-2026-10-24"
     },
     {
       "desc": "when the pull finished (UTC)",
       "group": "SNAPSHOT",
       "key": "created_utc",
-      "value": "2026-10-23T13:31:27+00:00"
+      "value": "2026-10-23T23:10:06+00:00"
     },
     {
       "desc": "pull date in market time; bars on this date may be unfinished",
       "group": "SNAPSHOT",
       "key": "pull_day_ist",
-      "value": "2026-10-23"
+      "value": "2026-10-24"
     },
     {
       "desc": "yfinance version used for the pull",
@@ -28,13 +28,13 @@
       "desc": "sha256 of BANKNIFTY.csv",
       "group": "SNAPSHOT",
       "key": "sha256_BANKNIFTY",
-      "value": "60ad50a802871a66e3a62abc2e40422fe3c9dbe637b92d30d47b1992ddb526a7"
+      "value": "59955330f6167c3d81bb0daf91ba08472ca227412508e7db64addeff15cb8ed4"
     },
     {
       "desc": "sha256 of NIFTY.csv",
       "group": "SNAPSHOT",
       "key": "sha256_NIFTY",
-      "value": "64c011af0ccc78bcae33c5f867819d604598a308a78fd90fc35fc41efae7c316"
+      "value": "74da4453bad563f82a9ab540d0eccab3ce038f79f0eb560d70d676c8a03f5720"
     },
     {
       "desc": "rows as received",
@@ -58,7 +58,7 @@
       "desc": "rows flagged missing_price",
       "group": "RAW-NIFTY",
       "key": "defect_missing_price",
-      "value": 9
+      "value": 10
     },
     {
       "desc": "rows flagged duplicate_date",
@@ -112,7 +112,7 @@
       "desc": "rows flagged on_or_after_pull_day",
       "group": "RAW-NIFTY",
       "key": "defect_on_or_after_pull_day",
-      "value": 1
+      "value": 0
     },
     {
       "desc": "rows with at least one defect",
@@ -208,7 +208,7 @@
       "desc": "rows flagged missing_price",
       "group": "RAW-BANKNIFTY",
       "key": "defect_missing_price",
-      "value": 5
+      "value": 6
     },
     {
       "desc": "rows flagged duplicate_date",
@@ -262,7 +262,7 @@
       "desc": "rows flagged on_or_after_pull_day",
       "group": "RAW-BANKNIFTY",
       "key": "defect_on_or_after_pull_day",
-      "value": 1
+      "value": 0
     },
     {
       "desc": "rows with at least one defect",
@@ -350,9 +350,9 @@
     }
   ],
   "groups": {
-    "RAW-BANKNIFTY": "BANKNIFTY (^NSEBANK) daily rows exactly as received in snapshot explore-2026-10-23",
-    "RAW-NIFTY": "NIFTY (^NSEI) daily rows exactly as received in snapshot explore-2026-10-23",
-    "SNAPSHOT": "snapshot explore-2026-10-23 as a whole"
+    "RAW-BANKNIFTY": "BANKNIFTY (^NSEBANK) daily rows exactly as received in snapshot frozen-2026-10-24",
+    "RAW-NIFTY": "NIFTY (^NSEI) daily rows exactly as received in snapshot frozen-2026-10-24",
+    "SNAPSHOT": "snapshot frozen-2026-10-24 as a whole"
   },
   "source": "00b_profile.py",
   "step": "00",
@@ -561,7 +561,7 @@
         [
           "2026-10-23",
           "Fri",
-          "on_or_after_pull_day"
+          "missing_price"
         ]
       ],
       "title": "NIFTY: every flagged or weekend row"
@@ -750,7 +750,7 @@
         [
           "2026-10-23",
           "Fri",
-          "on_or_after_pull_day"
+          "missing_price"
         ]
       ],
       "title": "BANKNIFTY: every flagged or weekend row"

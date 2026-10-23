@@ -8,15 +8,16 @@
 | group | meaning |
 |---|---|
 | CONFIG | settings in `config.py` |
-| CALENDAR | official NSE session calendar check, 2025-08-01 to 2026-10-22 |
-| CLEAN-BANKNIFTY | BANKNIFTY rows after cleaning, snapshot explore-2026-10-23 |
-| CLEAN-NIFTY | NIFTY rows after cleaning, snapshot explore-2026-10-23 |
-| RAW-BANKNIFTY | BANKNIFTY (^NSEBANK) daily rows exactly as received in snapshot explore-2026-10-23 |
-| RAW-NIFTY | NIFTY (^NSEI) daily rows exactly as received in snapshot explore-2026-10-23 |
+| CALENDAR | official NSE session calendar check, 2025-08-01 to 2026-10-23 |
+| CLEAN-BANKNIFTY | BANKNIFTY rows after cleaning, snapshot frozen-2026-10-24 |
+| CLEAN-NIFTY | NIFTY rows after cleaning, snapshot frozen-2026-10-24 |
+| RAW-BANKNIFTY | BANKNIFTY (^NSEBANK) daily rows exactly as received in snapshot frozen-2026-10-24 |
+| RAW-NIFTY | NIFTY (^NSEI) daily rows exactly as received in snapshot frozen-2026-10-24 |
+| REVISIONS | raw rows of snapshot frozen-2026-10-24 compared with the same dates in explore-2026-10-23 |
 | SMOKE | Kronos-small smoke test on NIFTY, the 5 days before 2025-09-01 (2025-08-22 to 2025-08-29); T=1.0, top_p=0.9 |
-| SNAPSHOT | snapshot explore-2026-10-23 as a whole |
-| TEST-BANKNIFTY | BANKNIFTY days in the test window 2026-01-01 to 2026-10-22 |
-| TEST-NIFTY | NIFTY days in the test window 2026-01-01 to 2026-10-22 |
+| SNAPSHOT | snapshot frozen-2026-10-24 as a whole |
+| TEST-BANKNIFTY | BANKNIFTY days in the test window 2026-01-01 to 2026-10-23 |
+| TEST-NIFTY | NIFTY days in the test window 2026-01-01 to 2026-10-23 |
 | TIMING | wall-clock on this machine, device=cpu, torch 2.14.1, 4 threads (a measurement: varies run to run) |
 | TUNE-BANKNIFTY | BANKNIFTY days in the tuning window 2025-09-01 to 2025-12-31 |
 | TUNE-NIFTY | NIFTY days in the tuning window 2025-09-01 to 2025-12-31 |
@@ -70,16 +71,16 @@ Source: `00b_profile.py`
 
 | group | key | value | meaning |
 |---|---|---|---|
-| SNAPSHOT | snapshot_id | explore-2026-10-23 | snapshot id |
-| SNAPSHOT | created_utc | 2026-10-23T13:31:27+00:00 | when the pull finished (UTC) |
-| SNAPSHOT | pull_day_ist | 2026-10-23 | pull date in market time; bars on this date may be unfinished |
+| SNAPSHOT | snapshot_id | frozen-2026-10-24 | snapshot id |
+| SNAPSHOT | created_utc | 2026-10-23T23:10:06+00:00 | when the pull finished (UTC) |
+| SNAPSHOT | pull_day_ist | 2026-10-24 | pull date in market time; bars on this date may be unfinished |
 | SNAPSHOT | yfinance_version | 1.7.0 | yfinance version used for the pull |
-| SNAPSHOT | sha256_BANKNIFTY | 60ad50a802871a66e3a62abc2e40422fe3c9dbe637b92d30d47b1992ddb526a7 | sha256 of BANKNIFTY.csv |
-| SNAPSHOT | sha256_NIFTY | 64c011af0ccc78bcae33c5f867819d604598a308a78fd90fc35fc41efae7c316 | sha256 of NIFTY.csv |
+| SNAPSHOT | sha256_BANKNIFTY | 59955330f6167c3d81bb0daf91ba08472ca227412508e7db64addeff15cb8ed4 | sha256 of BANKNIFTY.csv |
+| SNAPSHOT | sha256_NIFTY | 74da4453bad563f82a9ab540d0eccab3ce038f79f0eb560d70d676c8a03f5720 | sha256 of NIFTY.csv |
 | RAW-NIFTY | rows | 2916 | rows as received |
 | RAW-NIFTY | first_date | 2015-01-02 | first bar date |
 | RAW-NIFTY | last_date | 2026-10-23 | last bar date |
-| RAW-NIFTY | defect_missing_price | 9 | rows flagged missing_price |
+| RAW-NIFTY | defect_missing_price | 10 | rows flagged missing_price |
 | RAW-NIFTY | defect_duplicate_date | 0 | rows flagged duplicate_date |
 | RAW-NIFTY | defect_out_of_order | 0 | rows flagged out_of_order |
 | RAW-NIFTY | defect_flat_bar | 0 | rows flagged flat_bar |
@@ -88,7 +89,7 @@ Source: `00b_profile.py`
 | RAW-NIFTY | defect_nonpositive_price | 0 | rows flagged nonpositive_price |
 | RAW-NIFTY | defect_price_spike | 0 | rows flagged price_spike |
 | RAW-NIFTY | defect_not_midnight | 0 | rows flagged not_midnight |
-| RAW-NIFTY | defect_on_or_after_pull_day | 1 | rows flagged on_or_after_pull_day |
+| RAW-NIFTY | defect_on_or_after_pull_day | 0 | rows flagged on_or_after_pull_day |
 | RAW-NIFTY | rows_with_any_defect | 10 | rows with at least one defect |
 | RAW-NIFTY | rows_without_defect | 2906 | rows with no defect |
 | RAW-NIFTY | gaps_over_threshold | 0 | consecutive rows more than 5 calendar days apart |
@@ -104,7 +105,7 @@ Source: `00b_profile.py`
 | RAW-BANKNIFTY | rows | 2917 | rows as received |
 | RAW-BANKNIFTY | first_date | 2015-01-01 | first bar date |
 | RAW-BANKNIFTY | last_date | 2026-10-23 | last bar date |
-| RAW-BANKNIFTY | defect_missing_price | 5 | rows flagged missing_price |
+| RAW-BANKNIFTY | defect_missing_price | 6 | rows flagged missing_price |
 | RAW-BANKNIFTY | defect_duplicate_date | 0 | rows flagged duplicate_date |
 | RAW-BANKNIFTY | defect_out_of_order | 0 | rows flagged out_of_order |
 | RAW-BANKNIFTY | defect_flat_bar | 1 | rows flagged flat_bar |
@@ -113,7 +114,7 @@ Source: `00b_profile.py`
 | RAW-BANKNIFTY | defect_nonpositive_price | 0 | rows flagged nonpositive_price |
 | RAW-BANKNIFTY | defect_price_spike | 0 | rows flagged price_spike |
 | RAW-BANKNIFTY | defect_not_midnight | 0 | rows flagged not_midnight |
-| RAW-BANKNIFTY | defect_on_or_after_pull_day | 1 | rows flagged on_or_after_pull_day |
+| RAW-BANKNIFTY | defect_on_or_after_pull_day | 0 | rows flagged on_or_after_pull_day |
 | RAW-BANKNIFTY | rows_with_any_defect | 7 | rows with at least one defect |
 | RAW-BANKNIFTY | rows_without_defect | 2910 | rows with no defect |
 | RAW-BANKNIFTY | gaps_over_threshold | 0 | consecutive rows more than 5 calendar days apart |
@@ -175,7 +176,7 @@ Source: `00b_profile.py`
 | 2020-11-14 | Sat | missing_price |
 | 2025-02-01 | Sat | weekend only |
 | 2026-01-15 | Thu | missing_price |
-| 2026-10-23 | Fri | on_or_after_pull_day |
+| 2026-10-23 | Fri | missing_price |
 
 **BANKNIFTY: rows per calendar year** (group: RAW-BANKNIFTY)
 
@@ -219,7 +220,7 @@ Source: `00b_profile.py`
 | 2020-11-14 | Sat | missing_price |
 | 2025-02-01 | Sat | missing_price |
 | 2026-01-15 | Thu | missing_price |
-| 2026-10-23 | Fri | on_or_after_pull_day |
+| 2026-10-23 | Fri | missing_price |
 
 **Dates present in only one index** (group: SNAPSHOT)
 
@@ -233,18 +234,18 @@ Source: `01_clean_target_atr.py`
 
 | group | key | value | meaning |
 |---|---|---|---|
-| CALENDAR | expected_sessions | 301 | sessions that should have a daily bar |
+| CALENDAR | expected_sessions | 302 | sessions that should have a daily bar |
 | CALENDAR | muhurat_dates_listed | 11 | Muhurat dates in muhurat_sessions.csv |
 | CALENDAR | muhurat_closes_matched | 6 | Muhurat dates whose NIFTY row equals the published Muhurat close |
-| CLEAN-NIFTY | dropped_pull_day_or_later | 1 | rows removed: pull_day_or_later (cleaning step 1) |
-| CLEAN-NIFTY | dropped_missing_price | 9 | rows removed: missing_price (cleaning step 2) |
+| CLEAN-NIFTY | dropped_pull_day_or_later | 0 | rows removed: pull_day_or_later (cleaning step 1) |
+| CLEAN-NIFTY | dropped_missing_price | 10 | rows removed: missing_price (cleaning step 2) |
 | CLEAN-NIFTY | dropped_muhurat_session | 6 | rows removed: muhurat_session (cleaning step 3) |
 | CLEAN-NIFTY | dropped_impossible_bar | 0 | rows removed: impossible_bar (cleaning step 4) |
 | CLEAN-NIFTY | rows | 2900 | rows kept |
 | CLEAN-NIFTY | first_date | 2015-01-02 | first kept date |
 | CLEAN-NIFTY | last_date | 2026-10-22 | last kept date (last complete day) |
 | CLEAN-NIFTY | atr_parity_max_rel_diff | 7.162e-16 | largest relative gap between our ATR(14) and the ta library's, tuning + test rows |
-| CALENDAR | missing_sessions_NIFTY | 1 | NIFTY: official sessions with no bar in the data |
+| CALENDAR | missing_sessions_NIFTY | 2 | NIFTY: official sessions with no bar in the data |
 | CALENDAR | extra_rows_NIFTY | 0 | NIFTY: bars on dates that are not sessions |
 | TUNE-NIFTY | rows | 83 | rows in the window |
 | TUNE-NIFTY | scorable_days | 83 | days that will be scored (the n of every metric) |
@@ -252,15 +253,15 @@ Source: `01_clean_target_atr.py`
 | TEST-NIFTY | rows | 198 | rows in the window |
 | TEST-NIFTY | scorable_days | 197 | days that will be scored (the n of every metric) |
 | TEST-NIFTY | unscorable_days | 1 | days in the window that are not scored |
-| CLEAN-BANKNIFTY | dropped_pull_day_or_later | 1 | rows removed: pull_day_or_later (cleaning step 1) |
-| CLEAN-BANKNIFTY | dropped_missing_price | 5 | rows removed: missing_price (cleaning step 2) |
+| CLEAN-BANKNIFTY | dropped_pull_day_or_later | 0 | rows removed: pull_day_or_later (cleaning step 1) |
+| CLEAN-BANKNIFTY | dropped_missing_price | 6 | rows removed: missing_price (cleaning step 2) |
 | CLEAN-BANKNIFTY | dropped_muhurat_session | 6 | rows removed: muhurat_session (cleaning step 3) |
 | CLEAN-BANKNIFTY | dropped_impossible_bar | 1 | rows removed: impossible_bar (cleaning step 4) |
 | CLEAN-BANKNIFTY | rows | 2904 | rows kept |
 | CLEAN-BANKNIFTY | first_date | 2015-01-01 | first kept date |
 | CLEAN-BANKNIFTY | last_date | 2026-10-22 | last kept date (last complete day) |
 | CLEAN-BANKNIFTY | atr_parity_max_rel_diff | 6.809e-16 | largest relative gap between our ATR(14) and the ta library's, tuning + test rows |
-| CALENDAR | missing_sessions_BANKNIFTY | 1 | BANKNIFTY: official sessions with no bar in the data |
+| CALENDAR | missing_sessions_BANKNIFTY | 2 | BANKNIFTY: official sessions with no bar in the data |
 | CALENDAR | extra_rows_BANKNIFTY | 0 | BANKNIFTY: bars on dates that are not sessions |
 | TUNE-BANKNIFTY | rows | 83 | rows in the window |
 | TUNE-BANKNIFTY | scorable_days | 83 | days that will be scored (the n of every metric) |
@@ -268,6 +269,16 @@ Source: `01_clean_target_atr.py`
 | TEST-BANKNIFTY | rows | 198 | rows in the window |
 | TEST-BANKNIFTY | scorable_days | 197 | days that will be scored (the n of every metric) |
 | TEST-BANKNIFTY | unscorable_days | 1 | days in the window that are not scored |
+| REVISIONS | NIFTY_common_rows | 2916 | NIFTY: dates in both snapshots |
+| REVISIONS | NIFTY_changed_rows | 1 | NIFTY: common dates whose O/H/L/C differ (incl. missing) |
+| REVISIONS | NIFTY_rows_now_missing_a_price | 1 | NIFTY: common dates where a price present before is missing now |
+| REVISIONS | NIFTY_max_rel_change | 0 | NIFTY: largest relative change where both snapshots have the price |
+| REVISIONS | NIFTY_new_rows | 0 | NIFTY: dates only in the new snapshot |
+| REVISIONS | BANKNIFTY_common_rows | 2917 | BANKNIFTY: dates in both snapshots |
+| REVISIONS | BANKNIFTY_changed_rows | 1 | BANKNIFTY: common dates whose O/H/L/C differ (incl. missing) |
+| REVISIONS | BANKNIFTY_rows_now_missing_a_price | 1 | BANKNIFTY: common dates where a price present before is missing now |
+| REVISIONS | BANKNIFTY_max_rel_change | 0 | BANKNIFTY: largest relative change where both snapshots have the price |
+| REVISIONS | BANKNIFTY_new_rows | 0 | BANKNIFTY: dates only in the new snapshot |
 | CALENDAR | clean_sha256_BANKNIFTY | e45dd305e358aa3be3ea6487f7a63c97eeef580c28c4d9ebfe96859de87ea9e9 | sha256 of the cleaned BANKNIFTY.csv |
 | CALENDAR | clean_sha256_NIFTY | b9f05e7f000fc562c3871d6998daf6815ab3eb57770024de09b02716b323b3e5 | sha256 of the cleaned NIFTY.csv |
 
@@ -298,6 +309,7 @@ Source: `01_clean_target_atr.py`
 | date | weekday | effect |
 |---|---|---|
 | 2026-02-01 | Sun | next session is not scored |
+| 2026-10-23 | Fri | next session is not scored |
 
 **NIFTY: rows removed by cleaning** (group: CLEAN-NIFTY)
 
@@ -318,7 +330,7 @@ Source: `01_clean_target_atr.py`
 | 2024-11-01 | Fri | Muhurat session |
 | 2025-10-21 | Tue | Muhurat session |
 | 2026-01-15 | Thu | missing price |
-| 2026-10-23 | Fri | pull day (unfinished bar) |
+| 2026-10-23 | Fri | missing price |
 
 **BANKNIFTY test: days not scored** (group: TEST-BANKNIFTY)
 
@@ -331,6 +343,7 @@ Source: `01_clean_target_atr.py`
 | date | weekday | effect |
 |---|---|---|
 | 2026-02-01 | Sun | next session is not scored |
+| 2026-10-23 | Fri | next session is not scored |
 
 **BANKNIFTY: rows removed by cleaning** (group: CLEAN-BANKNIFTY)
 
@@ -348,7 +361,14 @@ Source: `01_clean_target_atr.py`
 | 2025-02-01 | Sat | missing price |
 | 2025-10-21 | Tue | Muhurat session |
 | 2026-01-15 | Thu | missing price |
-| 2026-10-23 | Fri | pull day (unfinished bar) |
+| 2026-10-23 | Fri | missing price |
+
+**Revised rows (first 10 per index)** (group: REVISIONS)
+
+| index | date | change |
+|---|---|---|
+| NIFTY | 2026-10-23 | close: 22600.00 → missing |
+| BANKNIFTY | 2026-10-23 | close: 54287.35 → missing |
 
 ## Step 02 — Kronos smoke test, sampler parity and timing
 

@@ -1,0 +1,28 @@
+{
+  "created_utc": "2026-10-23T23:10:06+00:00",
+  "files": {
+    "BANKNIFTY": {
+      "file": "BANKNIFTY.csv",
+      "rows": 2917,
+      "sha256": "59955330f6167c3d81bb0daf91ba08472ca227412508e7db64addeff15cb8ed4",
+      "symbol": "^NSEBANK"
+    },
+    "NIFTY": {
+      "file": "NIFTY.csv",
+      "rows": 2916,
+      "sha256": "74da4453bad563f82a9ab540d0eccab3ce038f79f0eb560d70d676c8a03f5720",
+      "symbol": "^NSEI"
+    }
+  },
+  "hide_exceptions": false,
+  "history_kwargs": {
+    "actions": true,
+    "auto_adjust": false,
+    "interval": "1d",
+    "keepna": true
+  },
+  "history_start": "2015-01-01",
+  "snapshot_id": "frozen-2026-10-24",
+  "source": "Yahoo Finance via yfinance Ticker.history",
+  "yfinance_version": "1.7.0"
+}

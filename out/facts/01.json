@@ -4,7 +4,7 @@
       "desc": "sessions that should have a daily bar",
       "group": "CALENDAR",
       "key": "expected_sessions",
-      "value": 301
+      "value": 302
     },
     {
       "desc": "Muhurat dates in muhurat_sessions.csv",
@@ -22,13 +22,13 @@
       "desc": "rows removed: pull_day_or_later (cleaning step 1)",
       "group": "CLEAN-NIFTY",
       "key": "dropped_pull_day_or_later",
-      "value": 1
+      "value": 0
     },
     {
       "desc": "rows removed: missing_price (cleaning step 2)",
       "group": "CLEAN-NIFTY",
       "key": "dropped_missing_price",
-      "value": 9
+      "value": 10
     },
     {
       "desc": "rows removed: muhurat_session (cleaning step 3)",
@@ -70,7 +70,7 @@
       "desc": "NIFTY: official sessions with no bar in the data",
       "group": "CALENDAR",
       "key": "missing_sessions_NIFTY",
-      "value": 1
+      "value": 2
     },
     {
       "desc": "NIFTY: bars on dates that are not sessions",
@@ -118,13 +118,13 @@
       "desc": "rows removed: pull_day_or_later (cleaning step 1)",
       "group": "CLEAN-BANKNIFTY",
       "key": "dropped_pull_day_or_later",
-      "value": 1
+      "value": 0
     },
     {
       "desc": "rows removed: missing_price (cleaning step 2)",
       "group": "CLEAN-BANKNIFTY",
       "key": "dropped_missing_price",
-      "value": 5
+      "value": 6
     },
     {
       "desc": "rows removed: muhurat_session (cleaning step 3)",
@@ -166,7 +166,7 @@
       "desc": "BANKNIFTY: official sessions with no bar in the data",
       "group": "CALENDAR",
       "key": "missing_sessions_BANKNIFTY",
-      "value": 1
+      "value": 2
     },
     {
       "desc": "BANKNIFTY: bars on dates that are not sessions",
@@ -211,6 +211,66 @@
       "value": 1
     },
     {
+      "desc": "NIFTY: dates in both snapshots",
+      "group": "REVISIONS",
+      "key": "NIFTY_common_rows",
+      "value": 2916
+    },
+    {
+      "desc": "NIFTY: common dates whose O/H/L/C differ (incl. missing)",
+      "group": "REVISIONS",
+      "key": "NIFTY_changed_rows",
+      "value": 1
+    },
+    {
+      "desc": "NIFTY: common dates where a price present before is missing now",
+      "group": "REVISIONS",
+      "key": "NIFTY_rows_now_missing_a_price",
+      "value": 1
+    },
+    {
+      "desc": "NIFTY: largest relative change where both snapshots have the price",
+      "group": "REVISIONS",
+      "key": "NIFTY_max_rel_change",
+      "value": 0.0
+    },
+    {
+      "desc": "NIFTY: dates only in the new snapshot",
+      "group": "REVISIONS",
+      "key": "NIFTY_new_rows",
+      "value": 0
+    },
+    {
+      "desc": "BANKNIFTY: dates in both snapshots",
+      "group": "REVISIONS",
+      "key": "BANKNIFTY_common_rows",
+      "value": 2917
+    },
+    {
+      "desc": "BANKNIFTY: common dates whose O/H/L/C differ (incl. missing)",
+      "group": "REVISIONS",
+      "key": "BANKNIFTY_changed_rows",
+      "value": 1
+    },
+    {
+      "desc": "BANKNIFTY: common dates where a price present before is missing now",
+      "group": "REVISIONS",
+      "key": "BANKNIFTY_rows_now_missing_a_price",
+      "value": 1
+    },
+    {
+      "desc": "BANKNIFTY: largest relative change where both snapshots have the price",
+      "group": "REVISIONS",
+      "key": "BANKNIFTY_max_rel_change",
+      "value": 0.0
+    },
+    {
+      "desc": "BANKNIFTY: dates only in the new snapshot",
+      "group": "REVISIONS",
+      "key": "BANKNIFTY_new_rows",
+      "value": 0
+    },
+    {
       "desc": "sha256 of the cleaned BANKNIFTY.csv",
       "group": "CALENDAR",
       "key": "clean_sha256_BANKNIFTY",
@@ -224,11 +284,12 @@
     }
   ],
   "groups": {
-    "CALENDAR": "official NSE session calendar check, 2025-08-01 to 2026-10-22",
-    "CLEAN-BANKNIFTY": "BANKNIFTY rows after cleaning, snapshot explore-2026-10-23",
-    "CLEAN-NIFTY": "NIFTY rows after cleaning, snapshot explore-2026-10-23",
-    "TEST-BANKNIFTY": "BANKNIFTY days in the test window 2026-01-01 to 2026-10-22",
-    "TEST-NIFTY": "NIFTY days in the test window 2026-01-01 to 2026-10-22",
+    "CALENDAR": "official NSE session calendar check, 2025-08-01 to 2026-10-23",
+    "CLEAN-BANKNIFTY": "BANKNIFTY rows after cleaning, snapshot frozen-2026-10-24",
+    "CLEAN-NIFTY": "NIFTY rows after cleaning, snapshot frozen-2026-10-24",
+    "REVISIONS": "raw rows of snapshot frozen-2026-10-24 compared with the same dates in explore-2026-10-23",
+    "TEST-BANKNIFTY": "BANKNIFTY days in the test window 2026-01-01 to 2026-10-23",
+    "TEST-NIFTY": "NIFTY days in the test window 2026-01-01 to 2026-10-23",
     "TUNE-BANKNIFTY": "BANKNIFTY days in the tuning window 2025-09-01 to 2025-12-31",
     "TUNE-NIFTY": "NIFTY days in the tuning window 2025-09-01 to 2025-12-31"
   },
@@ -341,6 +402,11 @@
           "2026-02-01",
           "Sun",
           "next session is not scored"
+        ],
+        [
+          "2026-10-23",
+          "Fri",
+          "next session is not scored"
         ]
       ],
       "title": "NIFTY: official sessions missing from the data"
@@ -431,7 +497,7 @@
         [
           "2026-10-23",
           "Fri",
-          "pull day (unfinished bar)"
+          "missing price"
         ]
       ],
       "title": "NIFTY: rows removed by cleaning"
@@ -463,6 +529,11 @@
         [
           "2026-02-01",
           "Sun",
+          "next session is not scored"
+        ],
+        [
+          "2026-10-23",
+          "Fri",
           "next session is not scored"
         ]
       ],
@@ -539,10 +610,31 @@
         [
           "2026-10-23",
           "Fri",
-          "pull day (unfinished bar)"
+          "missing price"
         ]
       ],
       "title": "BANKNIFTY: rows removed by cleaning"
+    },
+    {
+      "columns": [
+        "index",
+        "date",
+        "change"
+      ],
+      "group": "REVISIONS",
+      "rows": [
+        [
+          "NIFTY",
+          "2026-10-23",
+          "close: 22600.00 \u2192 missing"
+        ],
+        [
+          "BANKNIFTY",
+          "2026-10-23",
+          "close: 54287.35 \u2192 missing"
+        ]
+      ],
+      "title": "Revised rows (first 10 per index)"
     }
   ],
   "title": "Clean, calendar check, target and baselines"

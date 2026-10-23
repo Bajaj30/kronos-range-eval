@@ -169,18 +169,28 @@ def compare_snapshots(raw: dict, other_id: str):
         a, b = old.loc[common, ["open", "high", "low", "close"]], new.loc[common, ["open", "high", "low", "close"]]
         same = (a == b) | (a.isna() & b.isna())  # NaN-aware (trap 2)
         changed = common[~same.all(axis=1)]
-        rel = ((a - b).abs() / a).max(axis=1)
+        both = a.notna() & b.notna()
+        rel = ((a - b).abs() / a).where(both)
+        went_missing = (a.notna() & b.isna()).any(axis=1)
         facts += [
             F.fact(f"{name}_common_rows", len(common), g, f"{name}: dates in both snapshots"),
-            F.fact(f"{name}_changed_rows", len(changed), g, f"{name}: common dates whose O/H/L/C differ"),
-            F.fact(f"{name}_max_rel_change", float(rel.max()) if len(changed) else 0.0, g,
-                   f"{name}: largest relative price change on a common date"),
+            F.fact(f"{name}_changed_rows", len(changed), g, f"{name}: common dates whose O/H/L/C differ (incl. missing)"),
+            F.fact(f"{name}_rows_now_missing_a_price", int(went_missing.sum()), g,
+                   f"{name}: common dates where a price present before is missing now"),
+            F.fact(f"{name}_max_rel_change", float(rel.max().max()) if rel.notna().any().any() else 0.0, g,
+                   f"{name}: largest relative change where both snapshots have the price"),
             F.fact(f"{name}_new_rows", int((~new.index.isin(old.index)).sum()), g, f"{name}: dates only in the new snapshot"),
         ]
-        rows += [[name, str(d.date()), f"{rel[d]:.2e}"] for d in changed[:10]]
-    tables = [{"title": "Revised rows (first 10 per index)", "group": g, "columns": ["index", "date", "max rel change"],
+        for d in changed[:10]:
+            what = [f"{c}: {_price(a.at[d, c])} → {_price(b.at[d, c])}" for c in a.columns if not same.at[d, c]]
+            rows.append([name, str(d.date()), "; ".join(what)])
+    tables = [{"title": "Revised rows (first 10 per index)", "group": g, "columns": ["index", "date", "change"],
                "rows": rows}] if rows else []
     return facts, tables, groups
+
+
+def _price(v) -> str:
+    return "missing" if pd.isna(v) else f"{v:.2f}"
 
 
 def reason_for(row, pull_day, muhurat_dates) -> str:
