@@ -3,8 +3,13 @@ name = "kronos-range-eval"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
+    "einops>=0.8.2",
+    "huggingface-hub>=2.3.0",
     "numpy>=2.4.6",
     "pandas>=3.1.0",
+    "safetensors>=0.8.0",
+    "torch>=2.14.1",
+    "tqdm>=4.70.1",
     "yfinance>=1.7.0",
 ]
 
@@ -17,3 +22,5 @@ dev = [
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+# Upstream Kronos (pinned) calls .dt.weekday, deprecated in pandas 3; see lib/kronos_model.py.
+filterwarnings = ["ignore:Series.dt.weekday is deprecated"]

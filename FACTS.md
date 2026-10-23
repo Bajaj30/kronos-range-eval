@@ -13,9 +13,11 @@
 | CLEAN-NIFTY | NIFTY rows after cleaning, snapshot explore-2026-10-23 |
 | RAW-BANKNIFTY | BANKNIFTY (^NSEBANK) daily rows exactly as received in snapshot explore-2026-10-23 |
 | RAW-NIFTY | NIFTY (^NSEI) daily rows exactly as received in snapshot explore-2026-10-23 |
+| SMOKE | Kronos-small smoke test on NIFTY, the 5 days before 2025-09-01 (2025-08-22 to 2025-08-29); T=1.0, top_p=0.9 |
 | SNAPSHOT | snapshot explore-2026-10-23 as a whole |
 | TEST-BANKNIFTY | BANKNIFTY days in the test window 2026-01-01 to 2026-10-22 |
 | TEST-NIFTY | NIFTY days in the test window 2026-01-01 to 2026-10-22 |
+| TIMING | wall-clock on this machine, device=cpu, torch 2.14.1, 4 threads (a measurement: varies run to run) |
 | TUNE-BANKNIFTY | BANKNIFTY days in the tuning window 2025-09-01 to 2025-12-31 |
 | TUNE-NIFTY | NIFTY days in the tuning window 2025-09-01 to 2025-12-31 |
 
@@ -27,7 +29,8 @@
 | HISTORY_START | 2015-01-01 |
 | YF_HISTORY_KWARGS | `{"actions": true, "auto_adjust": false, "interval": "1d", "keepna": true}` |
 | YF_HIDE_EXCEPTIONS | False |
-| SNAPSHOT_ID | explore-2026-10-23 |
+| SNAPSHOT_ID | frozen-2026-10-24 |
+| COMPARE_SNAPSHOT_ID | explore-2026-10-23 |
 | MARKET_TZ | Asia/Kolkata |
 | GAP_DAYS | 5 |
 | SPIKE_PCT | 20 |
@@ -38,6 +41,28 @@
 | TEST_START | 2026-01-01 |
 | CALENDAR_START | 2025-08-01 |
 | HOLIDAY_YEARS | `[2025, 2026]` |
+| KRONOS_COMMIT | 67b630e67f6a18c9e9be918d9b4337c960db1e9a |
+| KRONOS_MODEL | NeoQuasar/Kronos-small |
+| KRONOS_MODEL_REV | 901c26c1332695a2a8f243eb2f37243a37bea320 |
+| KRONOS_MODEL_SHA256 | b082dfcbd8e8c142a725c8bbb99781802f38fec81210e13479effb32b3c3e020 |
+| KRONOS_TOKENIZER | NeoQuasar/Kronos-Tokenizer-base |
+| KRONOS_TOKENIZER_REV | 0e0117387f39004a9016484a186a908917e22426 |
+| KRONOS_TOKENIZER_SHA256 | 59d85f6af76a2c3b8240ea06cb21db4213b4eeca053f246b23e29cf832fc6bee |
+| KRONOS_MAX_CONTEXT | 512 |
+| CONTEXT_DAYS | 400 |
+| TOP_K | 0 |
+| KRONOS_DEVICE | cpu |
+| N_SAMPLES | 5000 |
+| SEEDS | `[1, 2, 3]` |
+| TUNE_GRID | `[[0.6, 0.9], [0.6, 0.99], [0.8, 0.9], [0.8, 0.99], [1.0, 0.9], [1.0, 0.99]]` |
+| BAND | `[0.1, 0.9]` |
+| BOOT_N | 5000 |
+| BOOT_BLOCK | 10 |
+| BOOT_SEED | 7 |
+| CI_LEVEL | 0.95 |
+| PASS_MAX_RATIO | 0.95 |
+| PASS_CI_HIGH_BELOW | 1 |
+| PASS_COVERAGE | `[0.75, 0.85]` |
 
 ## Step 00 — Raw data profile
 
@@ -324,3 +349,35 @@ Source: `01_clean_target_atr.py`
 | 2025-10-21 | Tue | Muhurat session |
 | 2026-01-15 | Thu | missing price |
 | 2026-10-23 | Fri | pull day (unfinished bar) |
+
+## Step 02 — Kronos smoke test, sampler parity and timing
+
+Source: `02_kronos_smoke.py`
+
+| group | key | value | meaning |
+|---|---|---|---|
+| SMOKE | kronos_commit | 67b630e67f6a18c9e9be918d9b4337c960db1e9a | vendor/Kronos HEAD, equal to the pin, no local edits |
+| SMOKE | weights_sha256_verified | yes | model and tokenizer safetensors match the pinned sha256 |
+| SMOKE | upstream_regression_tests_passed | 4 | Kronos's own regression tests (pinned revisions, greedy decoding) passing in this environment |
+| SMOKE | rows_from_predict_sample_count_5 | 1 | upstream predict(sample_count=5) returns ONE averaged row |
+| SMOKE | parity_samples_compared | 2500 | 500 samples x 5 days, same seeds |
+| SMOKE | parity_samples_identical | 2500 | fast sampler == upstream predict_batch on copies, bit for bit |
+| SMOKE | same_seed_identical | True | rerun with the same seed gives identical samples |
+| SMOKE | new_seed_differs | True | a different seed gives different samples |
+| SMOKE | n_samples | 5000 | samples per day (production count, D5) |
+| SMOKE | median_distinct_tr_values | 16 | distinct TR% values among the samples of a day, median over the smoke days (outputs are tokens) |
+| TIMING | fast_seconds_per_day | 0.2561 | fast sampler, 5000 samples, median over days |
+| TIMING | upstream_ms_per_sample | 41.81 | upstream predict_batch on 500 copies |
+| TIMING | planned_day_runs | 2178 | 6 configs x tune days + 3 seeds x test days, both indices |
+| TIMING | planned_minutes_fast_estimate | 9.297 | estimate: day runs x fast seconds per day |
+| TIMING | planned_hours_upstream_estimate | 126.5 | estimate: the same plan through upstream copies |
+
+**First look: raw (uncalibrated) forecasts vs the actual true range, % of previous close** (group: SMOKE)
+
+| date | day | actual TR% | ATR(14)% | naive% | Kronos median% | Kronos 10–90% | distinct sample values |
+|---|---|---|---|---|---|---|---|
+| 2025-08-22 | Fri | 0.900 | 0.793 | 0.412 | 0.777 | 0.634 – 1.117 | 18 |
+| 2025-08-25 | Mon | 0.609 | 0.808 | 0.900 | 0.820 | 0.552 – 0.975 | 14 |
+| 2025-08-26 | Tue | 1.114 | 0.791 | 0.609 | 0.794 | 0.537 – 0.879 | 10 |
+| 2025-08-28 | Thu | 0.933 | 0.822 | 1.114 | 0.831 | 0.667 – 1.110 | 16 |
+| 2025-08-29 | Fri | 0.685 | 0.837 | 0.933 | 0.918 | 0.799 – 1.179 | 27 |

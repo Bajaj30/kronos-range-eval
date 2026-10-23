@@ -1,0 +1,169 @@
+{
+  "facts": [
+    {
+      "desc": "vendor/Kronos HEAD, equal to the pin, no local edits",
+      "group": "SMOKE",
+      "key": "kronos_commit",
+      "value": "67b630e67f6a18c9e9be918d9b4337c960db1e9a"
+    },
+    {
+      "desc": "model and tokenizer safetensors match the pinned sha256",
+      "group": "SMOKE",
+      "key": "weights_sha256_verified",
+      "value": "yes"
+    },
+    {
+      "desc": "Kronos's own regression tests (pinned revisions, greedy decoding) passing in this environment",
+      "group": "SMOKE",
+      "key": "upstream_regression_tests_passed",
+      "value": 4
+    },
+    {
+      "desc": "upstream predict(sample_count=5) returns ONE averaged row",
+      "group": "SMOKE",
+      "key": "rows_from_predict_sample_count_5",
+      "value": 1
+    },
+    {
+      "desc": "500 samples x 5 days, same seeds",
+      "group": "SMOKE",
+      "key": "parity_samples_compared",
+      "value": 2500
+    },
+    {
+      "desc": "fast sampler == upstream predict_batch on copies, bit for bit",
+      "group": "SMOKE",
+      "key": "parity_samples_identical",
+      "value": 2500
+    },
+    {
+      "desc": "rerun with the same seed gives identical samples",
+      "group": "SMOKE",
+      "key": "same_seed_identical",
+      "value": true
+    },
+    {
+      "desc": "a different seed gives different samples",
+      "group": "SMOKE",
+      "key": "new_seed_differs",
+      "value": true
+    },
+    {
+      "desc": "samples per day (production count, D5)",
+      "group": "SMOKE",
+      "key": "n_samples",
+      "value": 5000
+    },
+    {
+      "desc": "distinct TR% values among the samples of a day, median over the smoke days (outputs are tokens)",
+      "group": "SMOKE",
+      "key": "median_distinct_tr_values",
+      "value": 16.0
+    },
+    {
+      "desc": "fast sampler, 5000 samples, median over days",
+      "group": "TIMING",
+      "key": "fast_seconds_per_day",
+      "value": 0.25611070900049526
+    },
+    {
+      "desc": "upstream predict_batch on 500 copies",
+      "group": "TIMING",
+      "key": "upstream_ms_per_sample",
+      "value": 41.812146999989636
+    },
+    {
+      "desc": "6 configs x tune days + 3 seeds x test days, both indices",
+      "group": "TIMING",
+      "key": "planned_day_runs",
+      "value": 2178
+    },
+    {
+      "desc": "estimate: day runs x fast seconds per day",
+      "group": "TIMING",
+      "key": "planned_minutes_fast_estimate",
+      "value": 9.296818736717977
+    },
+    {
+      "desc": "estimate: the same plan through upstream copies",
+      "group": "TIMING",
+      "key": "planned_hours_upstream_estimate",
+      "value": 126.48174467496865
+    }
+  ],
+  "groups": {
+    "SMOKE": "Kronos-small smoke test on NIFTY, the 5 days before 2025-09-01 (2025-08-22 to 2025-08-29); T=1.0, top_p=0.9",
+    "TIMING": "wall-clock on this machine, device=cpu, torch 2.14.1, 4 threads (a measurement: varies run to run)"
+  },
+  "source": "02_kronos_smoke.py",
+  "step": "02",
+  "tables": [
+    {
+      "columns": [
+        "date",
+        "day",
+        "actual TR%",
+        "ATR(14)%",
+        "naive%",
+        "Kronos median%",
+        "Kronos 10\u201390%",
+        "distinct sample values"
+      ],
+      "group": "SMOKE",
+      "rows": [
+        [
+          "2025-08-22",
+          "Fri",
+          "0.900",
+          "0.793",
+          "0.412",
+          "0.777",
+          "0.634 \u2013 1.117",
+          18
+        ],
+        [
+          "2025-08-25",
+          "Mon",
+          "0.609",
+          "0.808",
+          "0.900",
+          "0.820",
+          "0.552 \u2013 0.975",
+          14
+        ],
+        [
+          "2025-08-26",
+          "Tue",
+          "1.114",
+          "0.791",
+          "0.609",
+          "0.794",
+          "0.537 \u2013 0.879",
+          10
+        ],
+        [
+          "2025-08-28",
+          "Thu",
+          "0.933",
+          "0.822",
+          "1.114",
+          "0.831",
+          "0.667 \u2013 1.110",
+          16
+        ],
+        [
+          "2025-08-29",
+          "Fri",
+          "0.685",
+          "0.837",
+          "0.933",
+          "0.918",
+          "0.799 \u2013 1.179",
+          27
+        ]
+      ],
+      "title": "First look: raw (uncalibrated) forecasts vs the actual true range, % of previous close"
+    }
+  ],
+  "title": "Kronos smoke test, sampler parity and timing"
+}

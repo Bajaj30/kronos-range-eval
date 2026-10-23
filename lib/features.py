@@ -10,12 +10,15 @@ import numpy as np
 import pandas as pd
 
 
+def tr_points(high, low, prev_close):
+    """The true-range formula, max(H, C_prev) − min(L, C_prev), for actual bars and sampled bars alike.
+    Works on Series or arrays; NaN in any input gives NaN."""
+    return np.maximum(high, prev_close) - np.minimum(low, prev_close)
+
+
 def true_range(df: pd.DataFrame) -> pd.Series:
-    """max(H_t, C_t-1) − min(L_t, C_t-1) in points; NaN on the first row (no previous close)."""
-    prev_close = df["close"].shift(1)
-    return pd.concat([df["high"], prev_close], axis=1).max(axis=1, skipna=False) - pd.concat(
-        [df["low"], prev_close], axis=1
-    ).min(axis=1, skipna=False)
+    """True range of each day in points; NaN on the first row (no previous close)."""
+    return tr_points(df["high"], df["low"], df["close"].shift(1))
 
 
 def wilder_atr(tr: pd.Series, n: int) -> pd.Series:

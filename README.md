@@ -8,6 +8,8 @@
 
 **Status:**
 - Data pipeline done: pull, profile, cleaning, reconciliation against NSE's official trading calendar, target and ATR/naive baselines.
-- Next: Kronos sampling.
+- Kronos sampling done and checked bit for bit against the upstream implementation; metrics done.
+- **Pre-registered:** [PREREG.md](PREREG.md) fixes every setting and the pass rule before any tuning or test output exists.
+- Next: tuning on Sep–Dec 2025, then one test run on 2026.
 
 Raw market data is not redistributed in this repo. `00_pull_data.py` rebuilds it, and the committed manifest's sha256 shows whether your pull matches.

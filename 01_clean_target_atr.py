@@ -131,6 +131,12 @@ def main():
                        "rows": [[str(r.date.date()), r.date.day_name()[:3], reason_for(r, pull_day, muhurat["date"])]
                                 for _, r in dropped_raw.iterrows()]})
 
+    if config.COMPARE_SNAPSHOT_ID and config.COMPARE_SNAPSHOT_ID != config.SNAPSHOT_ID:
+        f2, t2, g2 = compare_snapshots(raw, config.COMPARE_SNAPSHOT_ID)
+        facts += f2
+        tables += t2
+        groups |= g2
+
     calendar_files = sorted(config.CALENDAR_DIR.glob("*.*"))
     meta = {
         "step": "01_clean_target_atr",
@@ -149,6 +155,32 @@ def main():
     print(f"wrote {path.relative_to(config.ROOT)}: {len(facts)} facts, {len(tables)} tables")
     for n, f in clean_manifest["files"].items():
         print(f"  clean {n}: {f['rows']} rows  sha256 {f['sha256'][:16]}…")
+
+
+def compare_snapshots(raw: dict, other_id: str):
+    """Rows present in both snapshots must carry the same prices; Yahoo can revise history between pulls."""
+    g = "REVISIONS"
+    groups = {g: f"raw rows of snapshot {config.SNAPSHOT_ID} compared with the same dates in {other_id}"}
+    facts, rows = [], []
+    for name in config.TICKERS:
+        old = normalise(load_raw(config.RAW_DIR / other_id, name), config.MARKET_TZ).set_index("date")
+        new = raw[name].set_index("date")
+        common = old.index.intersection(new.index)
+        a, b = old.loc[common, ["open", "high", "low", "close"]], new.loc[common, ["open", "high", "low", "close"]]
+        same = (a == b) | (a.isna() & b.isna())  # NaN-aware (trap 2)
+        changed = common[~same.all(axis=1)]
+        rel = ((a - b).abs() / a).max(axis=1)
+        facts += [
+            F.fact(f"{name}_common_rows", len(common), g, f"{name}: dates in both snapshots"),
+            F.fact(f"{name}_changed_rows", len(changed), g, f"{name}: common dates whose O/H/L/C differ"),
+            F.fact(f"{name}_max_rel_change", float(rel.max()) if len(changed) else 0.0, g,
+                   f"{name}: largest relative price change on a common date"),
+            F.fact(f"{name}_new_rows", int((~new.index.isin(old.index)).sum()), g, f"{name}: dates only in the new snapshot"),
+        ]
+        rows += [[name, str(d.date()), f"{rel[d]:.2e}"] for d in changed[:10]]
+    tables = [{"title": "Revised rows (first 10 per index)", "group": g, "columns": ["index", "date", "max rel change"],
+               "rows": rows}] if rows else []
+    return facts, tables, groups
 
 
 def reason_for(row, pull_day, muhurat_dates) -> str:

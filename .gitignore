@@ -10,5 +10,11 @@ data/raw/*.partial/
 data/clean/**/*.csv
 data/clean/*.partial/
 
+# model output on market data: Kronos samples and per-day forecast tables (D19)
+out/samples/
+out/tune/*.csv
+out/test/*.csv
+*.partial.npz
+
 # private interview prep (D17)
 INTERVIEW.md
