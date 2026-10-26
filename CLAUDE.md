@@ -2,10 +2,10 @@
 > Read order: §0 → rest of this file → FACTS.md → INTERVIEW.md (local only) → spec (`../context/v1_build_baseline_testing.md`).
 > Update this file at the end of every chunk.
 
-Last updated: 2026-10-24 · Chunks 0–6 done; Chunk 7 (the one test run) waits for the user's OK.
+Last updated: 2026-10-26 · Stopped after Chunk 6 (D38). The test (Chunk 7) was deliberately NOT run; README explains why.
 
-## 0. Where we are — read this first (2026-10-24)
-**State:** Chunks 0–6 are done. **Chunk 7, the single test run, has NOT run.** It needs the user's one-word OK (§8 Chunk 7).
+## 0. Where we are — read this first (2026-10-26)
+**State:** Chunks 0–6 are done. **v1 stopped here (D38): the single test run (Chunk 7) was not run, so the 2026 test window is still unopened.** No 2026 forecast or error exists, and `out/test_runs.log` does not exist. The README is the public write-up: question, tuning table, verdict (none; tuning says Kronos loses), why we stopped, limits.
 - **Data:** the frozen snapshot `frozen-2026-10-24` was pulled after PREREG was committed. It is cleaned, reconciled against the official NSE calendar, and diffed against the explore snapshot (FACTS step 01, `REVISIONS`).
   - Yahoo's Fri 23 Oct bar had no close at pull time, so it was dropped by the pre-registered rule and the test window ends 2026-10-22 (D37).
   - The cleaned files are byte-identical to the explore build.
@@ -22,7 +22,7 @@ Last updated: 2026-10-24 · Chunks 0–6 done; Chunk 7 (the one test run) waits 
   - Regenerating the chosen samples from scratch is bit-identical (FACTS step 03b).
 - **Tests:** see §8 for counts. `tools/mutation_check.py` catches every planted bug.
 
-**Live:** repo github.com/Bajaj30/kronos-range-eval (public). No site yet. **Headline number:** none yet; it comes after Chunk 7.
+**Live:** repo github.com/Bajaj30/kronos-range-eval (public), README written 2026-10-26. No site. **Headline number:** none (no test). The honest summary is the tuning table in FACTS step 03 (in-sample).
 
 **Not in git** (D19, D36):
 - raw and cleaned CSVs (`data/raw/<snap>/`, `data/clean/<snap>/`);
@@ -52,10 +52,11 @@ Rebuild with the commands below. The committed manifests and `out/chosen.json` h
 | test the tests | `uv run python -m tools.mutation_check` |
 | refresh NSE holiday lists | `uv run python -m tools.fetch_nse_holidays --refresh` (see trap 6) |
 
-**Open, in order of value:**
-1. **Chunk 7:** the user says OK → run `04_test.py` once, commit `out/results.json`, `out/test_runs.log` and FACTS.
-2. **Chunk 8:** README write-up, GitHub Pages site, number-check script, resume line from FACTS.
-3. After Chunk 8: India VIX baseline (D15); Kronos-base and Kronos-mini as separate runs.
+**Open, in order of value (only if the user restarts the work):**
+1. **v2 design:** a selection rule that matches the gate (MAE *and* coverage), or a band calibrated separately from the point forecast. Write a new PREREG, then use the still-unopened 2026 window.
+   - Do NOT run v1's `04_test.py` first: that would open the window for v1's flawed design.
+2. Chunk 8 extras (site, number-check script, resume line from FACTS), if wanted.
+3. India VIX baseline (D15); Kronos-base and Kronos-mini as separate runs.
 
 **Schedule** (spec §8 with corrected weekdays):
 
@@ -156,8 +157,8 @@ V1_baseline_testing/              (git repo → github.com/Bajaj30/kronos-range-
 | 4 | metrics | done 2026-10-24 (`lib/metrics.py`, `lib/evaluate.py`) |
 | 5 | pre-register | done 2026-10-24 (PREREG.md pushed; commit in FACTS step 03 `prereg_commit`) |
 | 6 | tune (Sep–Dec 2025) | done 2026-10-24 (FACTS step 03, `out/chosen.json`) |
-| 7 | test once (2026) | **code ready and committed with PREREG; waits for the user's OK** |
-| 8 | publish | not started |
+| 7 | test once (2026) | **not run (D38)**; code committed with PREREG, never executed |
+| 8 | publish | README write-up done 2026-10-26; no site |
 
 ## 6. Decisions
 - **D1–D14 (2026-10-23, user):** accepted as written in spec §5, except D5 below.
@@ -207,6 +208,13 @@ V1_baseline_testing/              (git repo → github.com/Bajaj30/kronos-range-
   - **Rejected:** a manual promise.
 - **D34 (2026-10-24, Claude):** the Chunk 2 "last 5 days" forecast print uses the last 5 days **before the tuning window**. Because the literal last 5 days are test days (D27).
 - **D35 (2026-10-24, Claude):** step files are 02 smoke, 03 tune and 04 test. Metrics live in `lib/` because they are a library, not a step. **Rejected:** the spec's 02–06 numbering.
+- **D38 (2026-10-26, user):** stop v1 after tuning and do not run the test.
+  - The user did not give the Chunk 7 OK and asked for a README covering the question, the tuning table, the verdict, why we stopped and the limits.
+  - **Reasons written in the README:**
+    - tuning already showed Kronos losing at every setting;
+    - the pre-registered selection rule is flawed (trap 17), so the one-shot test would be spent on a known-bad design;
+    - keeping the 2026 window unopened lets a corrected v2 be tested on unseen days.
+  - PREREG promised to publish the test result; no test result exists, and the README says so.
 - **D37 (2026-10-24, Claude):** keep the single frozen pull even though it adds no day.
   - **What happened:** Yahoo's 2026-10-23 bar had no close at 04:40 IST the next morning; the explore pull's intraday value was a round 22600.00. The pre-registered missing-price rule dropped it, so the test window ends 2026-10-22.
   - **Because:** a second "frozen" pull to gain one day would break PREREG §2 (pulled once). One day changes nothing material.
@@ -335,7 +343,7 @@ PREREG.md lists every setting in plain words, the pass rule, the changes from th
 
 **Done-when checks:** `check_windows` guards against overlap and against pre-release days. Each tuning day is asserted to come after the release and on or before TUNE_END. `chosen.json` exists, and the tuning table is in FACTS.
 
-### Chunk 7 — test once (waiting for the user's OK)
+### Chunk 7 — test once (NOT RUN, D38; the plan below is kept for a future run)
 `04_test.py` is written, tested (guards) and committed with PREREG. On the OK:
 1. `uv run python 04_test.py`.
 2. `uv run python facts.py`.
